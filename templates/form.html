@@ -1,0 +1,23 @@
+<form action="/result" method="POST">
+<h1>Lisää treeni treenipäiväkirjaan</h1>
+<p>
+
+Valitse treenilaji:
+<p>
+<input type="radio" name="sport" value="Kävely"> Kävely
+<input type="radio" name="sport" value="Juoksulenkki"> Juoksulenkki
+<input type="radio" name="sport" value="Kuntosali"> Kuntosali
+<input type="radio" name="sport" value="Pyöräily"> Pyöräily
+<input type="radio" name="sport" value="Uinti"> Uinti
+<p>
+
+Päivämäärä: <input type="date" name="date"> <br>
+Treeni alkoi: <input type="time" name="start"> <br>
+Treeni loppui: <input type="time" name="end"> <br>
+
+Kommentti: <br>
+<textarea name="comment" rows="3" cols="50"></textarea>
+<p>
+
+<input type="submit" value="Lähetä">
+</form>
