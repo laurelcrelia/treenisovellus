@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <title>Etusivu</title>
 <h1>Tervetuloa treenisovellukseen!</h1>
-<p>{{ message }}</p>
+<p>{{ exercise }}</p>
+
 <p>
-Voit siirtyä treenipäiväkirjaan <a href="http://127.0.0.1:5000/form">tästä</a>
+<b>Treenien määrä:</b> {{ count }}
+<p>
+
+<p>
+<button onclick="location.href='/form'" type="button">
+    Lisää uusi treeni</button>
+<p>
+
+<hr>
+{% for exercise in exercises %}
+{{ exercise.type }}
+<hr>
+{% endfor %}
 </p>
