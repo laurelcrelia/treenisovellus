@@ -6,7 +6,7 @@
 
 <p>
 <b>Laji:</b> <br>
-<input type="radio" name="type" value="Kävely"> Kävely
+<input type="radio" name="type" value="Kävely", checked> Kävely
 <input type="radio" name="type" value="Juoksulenkki"> Juoksulenkki
 <input type="radio" name="type" value="Kuntosali"> Kuntosali
 <input type="radio" name="type" value="Pyöräily"> Pyöräily
@@ -14,12 +14,12 @@
 <p>
 
 <b>Päivämäärä:</b> <br>
-<input type="date" name="date"> <br>
+<input type="date" name="date", required> <br>
 <p>
 <b>Treenin kesto:</b>
 <br>
 Kirjoita muodossa hh:mm <br>
-<input type="text" name="hours" size="5"> : <input type="text" name="minutes" size="5">
+<input type="text" name="hours" size="5", minlength="2" maxlength="2", required> : <input type="text" name="minutes" size="5", minlength="2" maxlength="2", required>
 <p>
 
 <b>Kommentti:</b><br>
