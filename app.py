@@ -14,9 +14,13 @@ def index():
     hours = db.session.execute(text("SELECT SUM(hours) FROM exercises"))
     minutes = db.session.execute(text("SELECT SUM(minutes) FROM exercises"))
     info = db.session.execute(text("SELECT type, date, hours, minutes FROM exercises"))
-    total_hours = hours.fetchone()[0]
-    total_minutes=minutes.fetchone()[0]
     exercises = result.fetchall()
+    if len(exercises) == 0:
+        total_hours = 0
+        total_minutes = 0
+    else:
+        total_hours = hours.fetchone()[0]
+        total_minutes = minutes.fetchone()[0]
     information = info.fetchall()
     return render_template("index.html", count=len(exercises), time=calculate(total_hours, total_minutes), exercises=exercises, information=information)
 
