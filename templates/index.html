@@ -4,7 +4,7 @@
 <p>{{ exercise }}</p>
 
 <p>
-<b>Treenien määrä:</b> {{ count }}
+<b>Treenien määrä:</b> {{ count }} <b> <br>Treenin kesto yhteensä:</b> {{ time }}
 <p>
 
 <p>
@@ -14,7 +14,8 @@
 
 <hr>
 {% for info in information %}
-<b>{{ info.type }}</b> {{ info.date }}
+<b>{{ info.type }}</b> {{ info.date }} <br>
+{{ info.hours }}h {{ info.minutes }}min
 <hr>
 {% endfor %}
 </p>

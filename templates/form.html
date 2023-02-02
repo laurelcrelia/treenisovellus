@@ -5,8 +5,7 @@
 <h1>Lisää treeni treenipäiväkirjaan:</h1>
 
 <p>
-Valitse treenilaji:
-<p>
+<b>Laji:</b> <br>
 <input type="radio" name="type" value="Kävely"> Kävely
 <input type="radio" name="type" value="Juoksulenkki"> Juoksulenkki
 <input type="radio" name="type" value="Kuntosali"> Kuntosali
@@ -14,11 +13,16 @@ Valitse treenilaji:
 <input type="radio" name="type" value="Uinti"> Uinti
 <p>
 
-Päivämäärä: <input type="date" name="date"> <br>
-Treeni alkoi: <input type="time" name="start"> <br>
-Treeni loppui: <input type="time" name="end"> <br>
+<b>Päivämäärä:</b> <br>
+<input type="date" name="date"> <br>
+<p>
+<b>Treenin kesto:</b>
+<br>
+Kirjoita muodossa hh:mm <br>
+<input type="text" name="hours" size="5"> : <input type="text" name="minutes" size="5">
+<p>
 
-Kommentti: <br>
+<b>Kommentti:</b><br>
 <textarea name="comment" rows="3" cols="50"></textarea>
 <p>
 
