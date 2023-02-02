@@ -10,9 +10,11 @@ db = SQLAlchemy(app)
 
 @app.route("/")
 def index():
-    result = db.session.execute(text("SELECT type FROM exercises"))
+    result = db.session.execute(text("SELECT id FROM exercises"))
+    info = db.session.execute(text("SELECT type, date FROM exercises"))
     exercises = result.fetchall()
-    return render_template("index.html", count=len(exercises), exercises=exercises)
+    information = info.fetchall()
+    return render_template("index.html", count=len(exercises), exercises=exercises, information=information)
 
 @app.route("/form")
 def form():
@@ -21,8 +23,9 @@ def form():
 @app.route("/send", methods=["POST"])
 def send():
     type = request.form["type"]
-    sql = text("INSERT INTO exercises (type) VALUES (:type)")
-    db.session.execute(sql, {"type":type})
+    date = (request.form["date"])
+    sql = text("INSERT INTO exercises (type, date) VALUES (:type, :date)")
+    db.session.execute(sql, {"type":type,"date":date})
     db.session.commit()
     return redirect("/")
 

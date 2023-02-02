@@ -13,8 +13,8 @@
 <p>
 
 <hr>
-{% for exercise in exercises %}
-{{ exercise.type }}
+{% for info in information %}
+<b>{{ info.type }}</b> {{ info.date }}
 <hr>
 {% endfor %}
 </p>
