@@ -11,10 +11,10 @@ db = SQLAlchemy(app)
 
 @app.route("/")
 def index():
-    result = db.session.execute(text("SELECT id FROM exercises WHERE visible=1 ORDER BY date"))
+    result = db.session.execute(text("SELECT id FROM exercises WHERE visible=1"))
     hours = db.session.execute(text("SELECT SUM(hours) FROM exercises"))
     minutes = db.session.execute(text("SELECT SUM(minutes) FROM exercises"))
-    info = db.session.execute(text("SELECT type, date, hours, minutes FROM exercises"))
+    info = db.session.execute(text("SELECT type, date, hours, minutes FROM exercises ORDER BY date DESC"))
     exercises = result.fetchall()
     if len(exercises) == 0:
         total_hours = 0
