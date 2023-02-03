@@ -1,9 +1,17 @@
-<!DOCTYPE html>
+{% extends "start.html" %}
+{% block content %}
+
 <title>Etusivu</title>
 <h1>Tervetuloa treenisovellukseen!</h1>
-<p>{{ exercise }}</p>
+
+{% if session.user_id %}
+Olet kirjautunut sisään nimellä <b>{{ session.user_name }}</b>. <a href="/logout">Kirjaudu ulos</a>
+{% else %}
+Et ole kirjautunut sisään. <a href="/login">Kirjaudu sisään</a>
+{% endif %}
 
 <p>
+
 <b>Treenien määrä:</b> {{ count }} <b> <br>Treenin kesto yhteensä:</b> {{ time }}
 <p>
 
@@ -19,3 +27,5 @@
 <hr>
 {% endfor %}
 </p>
+
+{% endblock %}
