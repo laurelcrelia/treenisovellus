@@ -9,7 +9,7 @@ Lihavoidut kohdat on jo toteutettu valmiiksi.
 - Käyttäjä voi poistaa treenin.
 - **Käyttäjä näkee etusivullaan treenit kronologisessa järjestyksessä niin että uusin treeni näkyy ensin ja vanhin viimeisenä.**
 - **Käyttäjä näkee etusivullaan myös koosteosion jossa lukee kaikkien omien treenien kokonaiskesto ja treenien lukumäärä.**
-- **Treenille tulee sen luomishetkellä määritellä päivämäärä, treenin kesto tunteina ja minuutteina sekä laji.**
+- **Treenille tulee sen luomishetkellä määritellä päivämäärä, treenin kesto tunteina ja minuutteina sekä laji. Nämä tiedot tallentuvat tietokantaan.**
 - Käyttäjä voi lisätä toisen käyttäjän kaverikseen etsimällä tämän käyttäjätunnuksen järjestelmästä.
 - Käyttäjä voi tarkastella kaverin etusivua.
 - Sekä omalle että kaverin treenille voi lisätä kommentin.   
