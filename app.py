@@ -8,9 +8,10 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2:///laurel"
 db = SQLAlchemy(app)
 
+
 @app.route("/")
 def index():
-    result = db.session.execute(text("SELECT id FROM exercises"))
+    result = db.session.execute(text("SELECT id FROM exercises WHERE visible=1 ORDER BY date"))
     hours = db.session.execute(text("SELECT SUM(hours) FROM exercises"))
     minutes = db.session.execute(text("SELECT SUM(minutes) FROM exercises"))
     info = db.session.execute(text("SELECT type, date, hours, minutes FROM exercises"))
@@ -41,10 +42,12 @@ def send():
     date = request.form["date"]
     hours = request.form["hours"]
     minutes = request.form["minutes"]
-    sql = text("INSERT INTO exercises (type, date, hours, minutes) VALUES (:type, :date, :hours, :minutes)")
+    sql = text("INSERT INTO exercises (type, date, hours, minutes, visible) VALUES (:type, :date, :hours, :minutes, 1)")
     db.session.execute(sql, {"type":type,"date":date, "hours":hours, "minutes":minutes})
     db.session.commit()
     return redirect("/")
+
+
 
 
     
