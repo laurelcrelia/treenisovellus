@@ -4,8 +4,8 @@ CREATE TABLE exercises (
     date DATE, 
     hours INTEGER, 
     minutes INTEGER, 
-    visible INTEGER
-    creator_id INTEGER REFERENCES users,
+    visible INTEGER,
+    creator_id INTEGER REFERENCES users
 );
 
 CREATE TABLE users (
