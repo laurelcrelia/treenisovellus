@@ -7,6 +7,10 @@ import users
 
 @app.route("/")
 def index():
+    return render_template("index.html")
+
+@app.route("/main", methods=["get","post"])
+def add_exercise():
     creator_id = users.user_id()
 
     sql1 = text("""SELECT COUNT(id), SUM(hours), SUM(minutes) FROM exercises WHERE visible=1 
@@ -28,7 +32,7 @@ def index():
     else:
         total_hours = calculations[0][1]
         total_minutes = calculations[0][2]
-    return render_template("index.html", count=exercise_count, time=calculate(total_hours, total_minutes), information=exercise_information)
+    return render_template("main.html", count=exercise_count, time=calculate(total_hours, total_minutes), information=exercise_information)
 
 def calculate(hours, minutes):
     if minutes/60 >= 1:
@@ -52,12 +56,12 @@ def send():
         VALUES (:type, :date, :hours, :minutes, 1, :creator_id)""")
     db.session.execute(sql, {"type":type,"date":date, "hours":hours, "minutes":minutes, "creator_id":creator_id})
     db.session.commit()
-    return redirect("/")
+    return redirect("/main")
 
-@app.route("/login", methods=["get", "post"])
+@app.route("/index", methods=["get", "post"])
 def login():
     if request.method == "GET":
-        return render_template("login.html")
+        return render_template("index.html")
 
     if request.method == "POST":
         username = request.form["username"]
@@ -65,7 +69,7 @@ def login():
 
         if not users.login(username, password):
             return render_template("error.html", message="Väärä tunnus tai salasana")
-        return redirect("/")
+        return redirect("/main")
 
 @app.route("/logout")
 def logout():
