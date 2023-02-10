@@ -14,3 +14,10 @@ CREATE TABLE users (
     name TEXT,
     password TEXT
 );
+
+CREATE TABLE comments (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users,
+    exercise_id INTEGER REFERENCES exercises,
+    comment TEXT
+);
