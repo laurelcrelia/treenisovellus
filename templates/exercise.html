@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+
+{% for info in information %}
+
+<p><b>Laji:</b> {{ info.type }}</p>
+<p><b>Päivämäärä:</b> {{ info.date }}</p>
+<p><b>Kesto:</b> {{ info.hours }}h {{ info.minutes }}min</p>
+<p><form action="/delete" method="POST">
+    <button name="id" type="submit" value="{{ info.id }}">Poista</button>
+    </form></p>
+
+<hr>
+{% endfor %}
+</p>
+
+<a href="/main">Palaa takaisin</a>
+
+{% endblock %}

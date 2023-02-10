@@ -44,7 +44,14 @@ def delete_exercise():
         exercises.delete_exercise(exercise_id, creator_id)
     return redirect("/main")
 
-@app.route("/index", methods=["get", "post"])
+@app.route("/show", methods=["POST"])
+def show_exercise():
+    creator_id = users.user_id()
+    if request.method == "POST":
+        exercise_id = request.form["id"]
+    return render_template("exercise.html", information=exercises.get_exercise_info(exercise_id, creator_id))
+
+@app.route("/index", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
         return render_template("index.html")
@@ -62,7 +69,7 @@ def logout():
     users.logout()
     return redirect("/")
 
-@app.route("/register", methods=["get", "post"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "GET":
         return render_template("register.html")
