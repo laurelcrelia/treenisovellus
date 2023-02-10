@@ -23,8 +23,15 @@ def form():
 def add_exercise():
     type = request.form["type"]
     date = request.form["date"]
+
     hours = request.form["hours"]
+    if int(hours) > 24:
+        return render_template("error.html", message="Virheellinen tuntimäärä")
+
     minutes = request.form["minutes"]
+    if int(minutes) > 59:
+        return render_template("error.html", message="Virheellinen minuuttimäärä")
+    
     creator_id = users.user_id()
     exercises.add_exercise(type, date, hours, minutes, creator_id)
     return redirect("/main")
