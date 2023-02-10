@@ -2,31 +2,43 @@ from db import db
 from sqlalchemy.sql import text
 
 def show_exercises(creator_id):
-    sql = text("""SELECT id, type, date, hours, minutes FROM exercises WHERE visible=1 AND creator_id=:creator_id 
-        ORDER BY date DESC""")
+    sql = text("""SELECT id, type, date, hours, minutes FROM exercises WHERE visible=1 
+        AND creator_id=:creator_id ORDER BY date DESC""")
     result = db.session.execute(sql, {"creator_id":creator_id})
     exercise_information = result.fetchall()
     return exercise_information
 
 def get_exercise_info(id, creator_id):
-    sql = text("""SELECT id, type, date, hours, minutes, created_at FROM exercises WHERE visible=1 AND id=:id 
-        AND creator_id=:creator_id""")
+    sql = text("""SELECT id, type, date, hours, minutes, created_at FROM exercises WHERE visible=1 
+        AND id=:id AND creator_id=:creator_id""")
     result = db.session.execute(sql, {"id":id, "creator_id":creator_id})
     exercise_information = result.fetchall()
     return exercise_information
 
+def get_date(id, creator_id):
+    sql = text("SELECT date FROM exercises WHERE visible=1 AND id=:id AND creator_id=:creator_id")
+    result = db.session.execute(sql, {"id":id, "creator_id":creator_id})
+    date = result.fetchall()[0][0]
+    int_form = date.strftime('%Y%m%d')
+    return convert_date(int_form, "date")
+
 def get_timestamp(id, creator_id):
-    sql = text("SELECT created_at as CurrDateTime FROM exercises WHERE visible=1 AND id=:id AND creator_id=:creator_id")
+    sql = text("SELECT created_at FROM exercises WHERE visible=1 AND id=:id AND creator_id=:creator_id")
     result = db.session.execute(sql, {"id":id, "creator_id":creator_id})
     timestamp = result.fetchall()[0][0]
     int_form = timestamp.strftime('%Y%m%d%H%M')
+    return convert_date(int_form, "timestamp")
+
+def convert_date(int_form, type):
     year = int_form[0:4]
     month = int_form[4:6]
     day = int_form[6:8]
     hour = int_form[8:10]
     minute = int_form[10:12]
-    return f"{day}.{month}.{year} klo {hour}:{minute}"
-    
+    if type == "date":
+        return f"{day}.{month}.{year}"
+    if type == "timestamp":
+        return f"{day}.{month}.{year} klo {hour}:{minute}"
 
 def count_exercises(creator_id):
     sql = text("""SELECT COUNT(id) FROM exercises WHERE visible=1 
@@ -44,10 +56,10 @@ def count_total_time(creator_id):
     exercise_count = calculations[0][0]
     total_hours = calculations[0][1]
     total_minutes = calculations[0][2]
-    total_time = calculate_time(exercise_count, total_hours, total_minutes)
+    total_time = convert_time(exercise_count, total_hours, total_minutes)
     return total_time
 
-def calculate_time(count, hours, minutes):
+def convert_time(count, hours, minutes):
     if count == 0:
         hours = 0
         minutes = 0

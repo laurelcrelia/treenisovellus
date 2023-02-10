@@ -21,7 +21,7 @@
 
 <hr>
 {% for info in information %}
-<b>{{ info.type }}</b> {{ info.date }} <br>
+<b>{{ info.type }}</b><br>
 {{ info.hours }}h {{ info.minutes }}min
 <form action="/show" method="POST">
 <button name="id" type="submit" value="{{ info.id }}">Näytä tiedot</button>

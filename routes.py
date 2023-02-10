@@ -49,7 +49,7 @@ def show_exercise():
     creator_id = users.user_id()
     if request.method == "POST":
         exercise_id = request.form["id"]
-    return render_template("exercise.html", information=exercises.get_exercise_info(exercise_id, creator_id), timestamp=exercises.get_timestamp(exercise_id, creator_id))
+    return render_template("exercise.html", information=exercises.get_exercise_info(exercise_id, creator_id), timestamp=exercises.get_timestamp(exercise_id, creator_id), date=exercises.get_date(exercise_id, creator_id))
 
 @app.route("/index", methods=["GET", "POST"])
 def login():
