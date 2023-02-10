@@ -3,43 +3,17 @@ from flask import render_template, request, redirect
 from db import db
 from sqlalchemy.sql import text
 import users
+import exercises
 
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/main", methods=["get","post"])
-def add_exercise():
+@app.route("/main")
+def main_page():
     creator_id = users.user_id()
-
-    sql1 = text("""SELECT COUNT(id), SUM(hours), SUM(minutes) FROM exercises WHERE visible=1 
-        AND creator_id=:creator_id""")
-    sql2 = text("""SELECT type, date, hours, minutes FROM exercises WHERE visible=1 AND creator_id=:creator_id 
-        ORDER BY date DESC""")
-
-    result1 = db.session.execute(sql1, {"creator_id":creator_id})
-    result2 = db.session.execute(sql2, {"creator_id":creator_id})
-
-    calculations = result1.fetchall()
-    exercise_information = result2.fetchall()
-
-    exercise_count = calculations[0][0]
-
-    if exercise_count == 0:
-        total_hours = 0
-        total_minutes = 0
-    else:
-        total_hours = calculations[0][1]
-        total_minutes = calculations[0][2]
-    return render_template("main.html", count=exercise_count, time=calculate(total_hours, total_minutes), information=exercise_information)
-
-def calculate(hours, minutes):
-    if minutes/60 >= 1:
-        hours += minutes//60
-        minutes -= minutes//60*60
-    total_time = f"{hours}h {minutes}min"
-    return total_time
+    return render_template("main.html", information=exercises.show_exercises(creator_id), count=exercises.count_exercises(creator_id), time=exercises.count_total_time(creator_id))
 
 @app.route("/form")
 def form():
