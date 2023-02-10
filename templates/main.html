@@ -23,6 +23,9 @@
 {% for info in information %}
 <b>{{ info.type }}</b> {{ info.date }} <br>
 {{ info.hours }}h {{ info.minutes }}min
+<form action="/delete" method="POST">
+<button name="id" type="submit" value="{{ info.id }}">Poista</button>
+</form>
 <hr>
 {% endfor %}
 </p>

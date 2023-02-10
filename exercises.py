@@ -2,7 +2,7 @@ from db import db
 from sqlalchemy.sql import text
 
 def show_exercises(creator_id):
-    sql = text("""SELECT type, date, hours, minutes FROM exercises WHERE visible=1 AND creator_id=:creator_id 
+    sql = text("""SELECT id, type, date, hours, minutes FROM exercises WHERE visible=1 AND creator_id=:creator_id 
         ORDER BY date DESC""")
     result = db.session.execute(sql, {"creator_id":creator_id})
     exercise_information = result.fetchall()
@@ -39,3 +39,7 @@ def add_exercise(type, date, hours, minutes, creator_id):
     db.session.execute(sql, {"type":type,"date":date, "hours":hours, "minutes":minutes, "creator_id":creator_id})
     db.session.commit()
 
+def delete_exercise(id, creator_id):
+    sql = text("UPDATE exercises SET visible=0 WHERE id=:id AND creator_id=:creator_id")
+    db.session.execute(sql, {"id":id, "creator_id":creator_id})
+    db.session.commit()

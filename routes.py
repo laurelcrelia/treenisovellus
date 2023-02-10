@@ -29,6 +29,14 @@ def add_exercise():
     exercises.add_exercise(type, date, hours, minutes, creator_id)
     return redirect("/main")
 
+@app.route("/delete", methods=["POST"])
+def delete_exercise():
+    creator_id = users.user_id()
+    if request.method == "POST":
+        exercise_id = request.form["id"]
+        exercises.delete_exercise(exercise_id, creator_id)
+    return redirect("/main")
+
 @app.route("/index", methods=["get", "post"])
 def login():
     if request.method == "GET":
