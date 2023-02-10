@@ -1,31 +1,18 @@
-{% extends "start.html" %}
+{% extends "layout.html" %}
 {% block content %}
 
 <title>Etusivu</title>
-<h1>Tervetuloa treenisovellukseen!</h1>
 
-{% if session.user_id %}
-Olet kirjautunut sisään nimellä <b>{{ session.user_name }}</b>. <a href="/logout">Kirjaudu ulos</a>
-{% else %}
-Et ole kirjautunut sisään. <a href="/login">Kirjaudu sisään</a>
-{% endif %}
+<h2>Kirjaudu sisään</h2>
 
+<form action="/index" method="post">
+Tunnus: <br><input type="text" name="username">
 <p>
-
-<b>Treenien määrä:</b> {{ count }} <b> <br>Treenin kesto yhteensä:</b> {{ time }}
+Salasana: <br><input type="password" name="password">
 <p>
+<input type="submit" value="Kirjaudu">
+</form>
+Jos sinulla ei ole tunnusta, voit luoda uuden tunnuksen <a href="/register">tästä</a>
 
-<p>
-<button onclick="location.href='/form'" type="button">
-    Lisää uusi treeni</button>
-<p>
-
-<hr>
-{% for info in information %}
-<b>{{ info.type }}</b> {{ info.date }} <br>
-{{ info.hours }}h {{ info.minutes }}min
-<hr>
-{% endfor %}
-</p>
 
 {% endblock %}

@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+
+{% if session.user_id %}
+<title>Etusivu</title>
+<h2>Tervetuloa {{ session.user_name }}!</h2>
+<a href="/logout">Kirjaudu ulos</a>
+{% else %}
+<a href="/login">Kirjaudu sisään</a>
+{% endif %}
+
+<p>
+
+<b>Treenien määrä:</b> {{ count }} <b> <br>Treenin kesto yhteensä:</b> {{ time }}
+<p>
+
+<p>
+<button onclick="location.href='/form'" type="button">
+    Lisää uusi treeni</button>
+<p>
+
+<hr>
+{% for info in information %}
+<b>{{ info.type }}</b> {{ info.date }} <br>
+{{ info.hours }}h {{ info.minutes }}min
+<hr>
+{% endfor %}
+</p>
+
+{% endblock %}
