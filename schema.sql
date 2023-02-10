@@ -5,7 +5,8 @@ CREATE TABLE exercises (
     hours INTEGER, 
     minutes INTEGER, 
     visible INTEGER,
-    creator_id INTEGER REFERENCES users
+    creator_id INTEGER REFERENCES users,
+    created_at TIMESTAMP
 );
 
 CREATE TABLE users (
