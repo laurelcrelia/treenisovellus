@@ -23,13 +23,19 @@ def count_total_time(creator_id):
     calculations = result.fetchall()
     total_hours = calculations[0][0]
     total_minutes = calculations[0][1]
-    total_time = calculate(total_hours, total_minutes)
+    total_time = calculate_time(total_hours, total_minutes)
     return total_time
 
-def calculate(hours, minutes):
+def calculate_time(hours, minutes):
     if minutes/60 >= 1:
         hours += minutes//60
         minutes -= minutes//60*60
     total_time = f"{hours}h {minutes}min"
     return total_time
+
+def add_exercise(type, date, hours, minutes, creator_id):
+    sql = text("""INSERT INTO exercises (type, date, hours, minutes, visible, creator_id) 
+        VALUES (:type, :date, :hours, :minutes, 1, :creator_id)""")
+    db.session.execute(sql, {"type":type,"date":date, "hours":hours, "minutes":minutes, "creator_id":creator_id})
+    db.session.commit()
 

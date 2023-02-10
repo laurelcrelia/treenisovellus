@@ -19,17 +19,14 @@ def main_page():
 def form():
     return render_template("form.html")
 
-@app.route("/send", methods=["POST"])
-def send():
+@app.route("/add", methods=["POST"])
+def add_exercise():
     type = request.form["type"]
     date = request.form["date"]
     hours = request.form["hours"]
     minutes = request.form["minutes"]
     creator_id = users.user_id()
-    sql = text("""INSERT INTO exercises (type, date, hours, minutes, visible, creator_id) 
-        VALUES (:type, :date, :hours, :minutes, 1, :creator_id)""")
-    db.session.execute(sql, {"type":type,"date":date, "hours":hours, "minutes":minutes, "creator_id":creator_id})
-    db.session.commit()
+    exercises.add_exercise(type, date, hours, minutes, creator_id)
     return redirect("/main")
 
 @app.route("/index", methods=["get", "post"])
