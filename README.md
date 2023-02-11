@@ -6,7 +6,7 @@ Sovellus on treenipäiväkirja tyylinen toteutus, jolla voi pitää kirjaa tehdy
 Lihavoidut kohdat on jo toteutettu valmiiksi.
 - **Käyttäjä voi luoda tunnuksen, jolla voi kirjautua sisään sekä ulos.**
 - **Käyttäjä voi lisätä uuden treenin.**
-- Käyttäjä voi poistaa treenin.
+- **Käyttäjä voi poistaa treenin.**
 - **Käyttäjä näkee etusivullaan treenit kronologisessa järjestyksessä niin että uusin treeni näkyy ensin ja vanhin viimeisenä.**
 - **Käyttäjä näkee etusivullaan myös koosteosion jossa lukee kaikkien omien treenien kokonaiskesto ja treenien lukumäärä.**
 - **Treenille tulee sen luomishetkellä määritellä päivämäärä, treenin kesto tunteina ja minuutteina sekä laji. Nämä tiedot tallentuvat tietokantaan.**
