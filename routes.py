@@ -1,10 +1,7 @@
 from app import app
 from flask import render_template, request, redirect
-from db import db
-from sqlalchemy.sql import text
 import users
 import exercises
-
 
 @app.route("/")
 def index():
@@ -31,9 +28,15 @@ def add_exercise():
     minutes = request.form["minutes"]
     if int(minutes) > 59:
         return render_template("error.html", message="Virheellinen minuuttimäärä")
+
+    comment = request.form["comment"]
+    if len(comment) > 1000:
+        return render_template("error.html", message="Kommentti ylitti sallitun merkkimäärän")
     
     creator_id = users.user_id()
-    exercises.add_exercise(type, date, hours, minutes, creator_id)
+    exercise_id = exercises.add_exercise(type, date, hours, minutes, creator_id)
+    exercises.add_comment(creator_id, exercise_id, comment)
+
     return redirect("/main")
 
 @app.route("/delete", methods=["POST"])
@@ -49,7 +52,7 @@ def show_exercise():
     creator_id = users.user_id()
     if request.method == "POST":
         exercise_id = request.form["id"]
-    return render_template("exercise.html", information=exercises.get_exercise_info(exercise_id, creator_id), timestamp=exercises.get_timestamp(exercise_id, creator_id), date=exercises.get_date(exercise_id, creator_id))
+    return render_template("exercise.html", information=exercises.get_exercise_info(exercise_id, creator_id), comments=exercises.get_exercise_comments(exercise_id, creator_id), timestamp=exercises.get_timestamp(exercise_id, creator_id), date=exercises.get_date(exercise_id, creator_id))
 
 @app.route("/index", methods=["GET", "POST"])
 def login():
@@ -89,3 +92,13 @@ def register():
         if not users.register(username, password1):
             return render_template("error.html", message="Rekisteröinti ei onnistunut")
         return redirect("/")
+
+# @app.route("/add", methods=["POST"])
+# def comment():
+#     creator_id = users.user_id()
+#     exercise_id = request.form["exercise_id"]
+#     comment = request.form["comment"]
+#     if len(comment) > 1000:
+#         return render_template("error.html", message="Kommentti ylitti sallitun merkkimäärän")
+#     exercises.add_comment(creator_id, exercise_id, comment)
+    

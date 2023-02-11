@@ -8,8 +8,14 @@
 <p><b>Laji:</b> {{ info.type }}</p>
 <p><b>Kesto:</b> {{ info.hours }}h {{ info.minutes }}min</p>
 <p><b>Luotu</b> {{ timestamp }}</p>
+{% for comment in comments %}
+<p><b>Kommentit:</b> </p>
+<hr>
+<p><b>{{ comment.name }}:</b> {{ comment.comment }}</p>
+{% endfor %}
+<hr>
 <p><form action="/delete" method="POST">
-    <button name="id" type="submit" value="{{ info.id }}">Poista</button>
+    <button name="id" type="submit" value="{{ info.id }}">Poista treeni</button>
     </form></p>
 
 <hr>

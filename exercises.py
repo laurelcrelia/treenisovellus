@@ -15,6 +15,13 @@ def get_exercise_info(id, creator_id):
     exercise_information = result.fetchall()
     return exercise_information
 
+def get_exercise_comments(id, creator_id):
+    sql = text("""SELECT c.comment, u.name FROM comments c, users u WHERE c.exercise_id=:id 
+        AND c.user_id=:creator_id AND u.id=:creator_id""")
+    result = db.session.execute(sql, {"id":id, "creator_id":creator_id})
+    exercise_comments = result.fetchall()
+    return exercise_comments
+
 def get_date(id, creator_id):
     sql = text("SELECT date FROM exercises WHERE visible=1 AND id=:id AND creator_id=:creator_id")
     result = db.session.execute(sql, {"id":id, "creator_id":creator_id})
@@ -71,11 +78,19 @@ def convert_time(count, hours, minutes):
 
 def add_exercise(type, date, hours, minutes, creator_id):
     sql = text("""INSERT INTO exercises (type, date, hours, minutes, visible, creator_id, created_at) 
-        VALUES (:type, :date, :hours, :minutes, 1, :creator_id, NOW())""")
+        VALUES (:type, :date, :hours, :minutes, 1, :creator_id, NOW()) RETURNING id""")
+    exercise_id = db.session.execute(sql, {"type":type,"date":date, "hours":hours, "minutes":minutes, "creator_id":creator_id}).fetchone()[0]
     db.session.execute(sql, {"type":type,"date":date, "hours":hours, "minutes":minutes, "creator_id":creator_id})
     db.session.commit()
+    return exercise_id
 
 def delete_exercise(id, creator_id):
     sql = text("UPDATE exercises SET visible=0 WHERE id=:id AND creator_id=:creator_id")
     db.session.execute(sql, {"id":id, "creator_id":creator_id})
+    db.session.commit()
+
+def add_comment(user_id, exercise_id, comment):
+    sql = text("""INSERT INTO comments (user_id, exercise_id, comment) VALUES 
+        (:user_id, :exercise_id, :comment)""")
+    db.session.execute(sql, {"user_id":user_id, "exercise_id":exercise_id, "comment":comment})
     db.session.commit()
