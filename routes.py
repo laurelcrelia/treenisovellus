@@ -1,5 +1,5 @@
-from app import app
 from flask import render_template, request, redirect
+from app import app
 import users
 import exercises
 
@@ -10,7 +10,8 @@ def index():
 @app.route("/main")
 def main_page():
     creator_id = users.user_id()
-    return render_template("main.html", information=exercises.show_exercises(creator_id), count=exercises.count_exercises(creator_id), time=exercises.count_total_time(creator_id))
+    return render_template("main.html", information=exercises.show_exercises(creator_id),
+    count=exercises.count_exercises(creator_id), time=exercises.count_total_time(creator_id))
 
 @app.route("/form")
 def form():
@@ -18,7 +19,7 @@ def form():
 
 @app.route("/add", methods=["POST"])
 def add_exercise():
-    type = request.form["type"]
+    exercise_type = request.form["type"]
     date = request.form["date"]
 
     hours = request.form["hours"]
@@ -32,9 +33,9 @@ def add_exercise():
     comment = request.form["comment"]
     if len(comment) > 1000:
         return render_template("error.html", message="Kommentti ylitti sallitun merkkimäärän")
-    
+
     creator_id = users.user_id()
-    exercise_id = exercises.add_exercise(type, date, hours, minutes, creator_id)
+    exercise_id = exercises.add_exercise(exercise_type, date, hours, minutes, creator_id)
     exercises.add_comment(creator_id, exercise_id, comment)
 
     return redirect("/main")
@@ -60,15 +61,23 @@ def add_comment():
     if request.method == "POST":
         exercise_id = request.form["id"]
         exercises.add_comment(creator_id, exercise_id, comment)
-        
-    return render_template("exercise.html", information=exercises.get_exercise_info(exercise_id, creator_id), comments=exercises.get_exercise_comments(exercise_id, creator_id), timestamp=exercises.get_timestamp(exercise_id, creator_id), date=exercises.get_date(exercise_id, creator_id))
+
+    return render_template("exercise.html",
+    information=exercises.get_exercise_info(exercise_id, creator_id),
+    comments=exercises.get_exercise_comments(exercise_id, creator_id),
+    timestamp=exercises.get_timestamp(exercise_id, creator_id),
+    date=exercises.get_date(exercise_id, creator_id))
 
 @app.route("/show", methods=["POST"])
 def show_exercise():
     creator_id = users.user_id()
     if request.method == "POST":
         exercise_id = request.form["id"]
-    return render_template("exercise.html", information=exercises.get_exercise_info(exercise_id, creator_id), comments=exercises.get_exercise_comments(exercise_id, creator_id), timestamp=exercises.get_timestamp(exercise_id, creator_id), date=exercises.get_date(exercise_id, creator_id))
+    return render_template("exercise.html",
+    information=exercises.get_exercise_info(exercise_id, creator_id),
+    comments=exercises.get_exercise_comments(exercise_id, creator_id),
+    timestamp=exercises.get_timestamp(exercise_id, creator_id),
+    date=exercises.get_date(exercise_id, creator_id))
 
 @app.route("/index", methods=["GET", "POST"])
 def login():
@@ -108,5 +117,3 @@ def register():
         if not users.register(username, password1):
             return render_template("error.html", message="Rekisteröinti ei onnistunut")
         return redirect("/")
-
-    

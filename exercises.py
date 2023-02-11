@@ -1,54 +1,56 @@
-from db import db
 from sqlalchemy.sql import text
+from db import db
 
 def show_exercises(creator_id):
-    sql = text("""SELECT id, type, date, hours, minutes FROM exercises WHERE visible=1 
+    sql = text("""SELECT id, type, date, hours, minutes FROM exercises WHERE visible=1
         AND creator_id=:creator_id ORDER BY date DESC""")
     result = db.session.execute(sql, {"creator_id":creator_id})
     exercise_information = result.fetchall()
     return exercise_information
 
-def get_exercise_info(id, creator_id):
-    sql = text("""SELECT id, type, date, hours, minutes, created_at FROM exercises WHERE visible=1 
+def get_exercise_info(exercise_id, creator_id):
+    sql = text("""SELECT id, type, date, hours, minutes, created_at FROM exercises WHERE visible=1
         AND id=:id AND creator_id=:creator_id""")
-    result = db.session.execute(sql, {"id":id, "creator_id":creator_id})
+    result = db.session.execute(sql, {"id":exercise_id, "creator_id":creator_id})
     exercise_information = result.fetchall()
     return exercise_information
 
-def get_exercise_comments(id, creator_id):
-    sql = text("""SELECT c.comment, u.name FROM comments c, users u WHERE c.exercise_id=:id 
+def get_exercise_comments(exercise_id, creator_id):
+    sql = text("""SELECT c.comment, u.name FROM comments c, users u WHERE c.exercise_id=:id
         AND c.user_id=:creator_id AND u.id=:creator_id""")
-    result = db.session.execute(sql, {"id":id, "creator_id":creator_id})
+    result = db.session.execute(sql, {"id":exercise_id, "creator_id":creator_id})
     exercise_comments = result.fetchall()
     return exercise_comments
 
-def get_date(id, creator_id):
+def get_date(exercise_id, creator_id):
     sql = text("SELECT date FROM exercises WHERE visible=1 AND id=:id AND creator_id=:creator_id")
-    result = db.session.execute(sql, {"id":id, "creator_id":creator_id})
+    result = db.session.execute(sql, {"id":exercise_id, "creator_id":creator_id})
     date = result.fetchall()[0][0]
     int_form = date.strftime('%Y%m%d')
     return convert_date(int_form, "date")
 
-def get_timestamp(id, creator_id):
-    sql = text("SELECT created_at FROM exercises WHERE visible=1 AND id=:id AND creator_id=:creator_id")
-    result = db.session.execute(sql, {"id":id, "creator_id":creator_id})
+def get_timestamp(exercise_id, creator_id):
+    sql = text("""SELECT created_at FROM exercises WHERE visible=1 AND id=:id AND
+        creator_id=:creator_id""")
+    result = db.session.execute(sql, {"id":exercise_id, "creator_id":creator_id})
     timestamp = result.fetchall()[0][0]
     int_form = timestamp.strftime('%Y%m%d%H%M')
     return convert_date(int_form, "timestamp")
 
-def convert_date(int_form, type):
+def convert_date(int_form, exercise_type):
     year = int_form[0:4]
     month = int_form[4:6]
     day = int_form[6:8]
     hour = int_form[8:10]
     minute = int_form[10:12]
-    if type == "date":
-        return f"{day}.{month}.{year}"
-    if type == "timestamp":
-        return f"{day}.{month}.{year} klo {hour}:{minute}"
+    if exercise_type == "date":
+        output = f"{day}.{month}.{year}"
+    if exercise_type == "timestamp":
+        output = f"{day}.{month}.{year} klo {hour}:{minute}"
+    return output
 
 def count_exercises(creator_id):
-    sql = text("""SELECT COUNT(id) FROM exercises WHERE visible=1 
+    sql = text("""SELECT COUNT(id) FROM exercises WHERE visible=1
         AND creator_id=:creator_id""")
     result = db.session.execute(sql, {"creator_id":creator_id})
     calculations = result.fetchall()
@@ -56,7 +58,7 @@ def count_exercises(creator_id):
     return exercise_count
 
 def count_total_time(creator_id):
-    sql = text("""SELECT COUNT(id), SUM(hours), SUM(minutes) FROM exercises WHERE visible=1 
+    sql = text("""SELECT COUNT(id), SUM(hours), SUM(minutes) FROM exercises WHERE visible=1
         AND creator_id=:creator_id""")
     result = db.session.execute(sql, {"creator_id":creator_id})
     calculations = result.fetchall()
@@ -76,21 +78,23 @@ def convert_time(count, hours, minutes):
     total_time = f"{hours}h {minutes}min"
     return total_time
 
-def add_exercise(type, date, hours, minutes, creator_id):
-    sql = text("""INSERT INTO exercises (type, date, hours, minutes, visible, creator_id, created_at) 
-        VALUES (:type, :date, :hours, :minutes, 1, :creator_id, NOW()) RETURNING id""")
-    exercise_id = db.session.execute(sql, {"type":type,"date":date, "hours":hours, "minutes":minutes, "creator_id":creator_id}).fetchone()[0]
-    db.session.execute(sql, {"type":type,"date":date, "hours":hours, "minutes":minutes, "creator_id":creator_id})
+def add_exercise(exercise_type, date, hours, minutes, creator_id):
+    sql = text("""INSERT INTO exercises (type, date, hours, minutes, visible, creator_id,
+        created_at) VALUES (:type, :date, :hours, :minutes, 1, :creator_id, NOW()) RETURNING id""")
+    exercise_id = db.session.execute(sql, {"type":exercise_type,"date":date, "hours":hours,
+    "minutes":minutes, "creator_id":creator_id}).fetchone()[0]
+    db.session.execute(sql, {"type":exercise_type,"date":date, "hours":hours, "minutes":minutes,
+    "creator_id":creator_id})
     db.session.commit()
     return exercise_id
 
-def delete_exercise(id, creator_id):
+def delete_exercise(exercise_id, creator_id):
     sql = text("UPDATE exercises SET visible=0 WHERE id=:id AND creator_id=:creator_id")
-    db.session.execute(sql, {"id":id, "creator_id":creator_id})
+    db.session.execute(sql, {"id":exercise_id, "creator_id":creator_id})
     db.session.commit()
 
 def add_comment(user_id, exercise_id, comment):
-    sql = text("""INSERT INTO comments (user_id, exercise_id, comment) VALUES 
+    sql = text("""INSERT INTO comments (user_id, exercise_id, comment) VALUES
         (:user_id, :exercise_id, :comment)""")
     db.session.execute(sql, {"user_id":user_id, "exercise_id":exercise_id, "comment":comment})
     db.session.commit()
