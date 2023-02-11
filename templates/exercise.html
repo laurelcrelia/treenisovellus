@@ -8,17 +8,22 @@
 <p><b>Laji:</b> {{ info.type }}</p>
 <p><b>Kesto:</b> {{ info.hours }}h {{ info.minutes }}min</p>
 <p><b>Luotu</b> {{ timestamp }}</p>
-{% for comment in comments %}
 <p><b>Kommentit:</b> </p>
+{% for comment in comments %}
 <hr>
 <p><b>{{ comment.name }}:</b> {{ comment.comment }}</p>
 {% endfor %}
 <hr>
-<p><form action="/delete" method="POST">
-    <button name="id" type="submit" value="{{ info.id }}">Poista treeni</button>
-    </form></p>
+
+<p><form action="/comment" method="POST">
+<textarea name="comment" rows="3" cols="50" maxlength="1000"></textarea>
+<button name="id" type="submit" value="{{ info.id }}">Lisää kommentti</button>
+</form></p>
 
 <hr>
+<p><form action="/delete" method="POST">
+<button name="id" type="submit" value="{{ info.id }}">Poista treeni</button>
+</form></p>
 {% endfor %}
 </p>
 

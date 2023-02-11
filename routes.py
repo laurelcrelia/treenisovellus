@@ -42,10 +42,26 @@ def add_exercise():
 @app.route("/delete", methods=["POST"])
 def delete_exercise():
     creator_id = users.user_id()
+
     if request.method == "POST":
         exercise_id = request.form["id"]
         exercises.delete_exercise(exercise_id, creator_id)
+
     return redirect("/main")
+
+@app.route("/comment", methods=["POST"])
+def add_comment():
+    creator_id = users.user_id()
+    comment = request.form["comment"]
+
+    if len(comment) > 1000:
+        return render_template("error.html", message="Kommentti ylitti sallitun merkkimäärän")
+
+    if request.method == "POST":
+        exercise_id = request.form["id"]
+        exercises.add_comment(creator_id, exercise_id, comment)
+        
+    return render_template("exercise.html", information=exercises.get_exercise_info(exercise_id, creator_id), comments=exercises.get_exercise_comments(exercise_id, creator_id), timestamp=exercises.get_timestamp(exercise_id, creator_id), date=exercises.get_date(exercise_id, creator_id))
 
 @app.route("/show", methods=["POST"])
 def show_exercise():
@@ -93,12 +109,4 @@ def register():
             return render_template("error.html", message="Rekisteröinti ei onnistunut")
         return redirect("/")
 
-# @app.route("/add", methods=["POST"])
-# def comment():
-#     creator_id = users.user_id()
-#     exercise_id = request.form["exercise_id"]
-#     comment = request.form["comment"]
-#     if len(comment) > 1000:
-#         return render_template("error.html", message="Kommentti ylitti sallitun merkkimäärän")
-#     exercises.add_comment(creator_id, exercise_id, comment)
     
