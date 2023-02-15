@@ -11,7 +11,7 @@ def index():
 def main_page():
     creator_id = users.user_id()
     return render_template("main.html", information=exercises.show_exercises(creator_id),
-    count=exercises.count_exercises(creator_id), time=exercises.count_total_time(creator_id))
+    count=exercises.count_exercises(creator_id), time=exercises.count_total_time(creator_id), friends=users.show_friends(creator_id))
 
 @app.route("/form")
 def form():
@@ -117,3 +117,14 @@ def register():
         if not users.register(username, password1):
             return render_template("error.html", message="Rekisteröinti ei onnistunut")
         return redirect("/")
+
+@app.route("/search", methods=["GET"])
+def search_friend():
+    user_id = users.user_id()
+    search = request.args["search"]
+    if request.method == "GET":
+        if not users.search_friend(search):
+            return render_template("error.html", message="Syöttämääsi käyttäjää ei löydy järjestelmästä")
+        else:
+            users.add_friend(user_id, users.search_friend(search), search)
+            return redirect("/main")

@@ -38,3 +38,26 @@ def user_id():
 def check_csrf():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
+
+def show_friends(user_id):
+    sql = text("""SELECT DISTINCT friend_name FROM relations WHERE visible=1
+        AND user_id=:user_id""")
+    result = db.session.execute(sql, {"user_id":user_id})
+    friends = result.fetchall()[0]
+    return friends
+
+def search_friend(friend):
+    try:
+        sql = text("SELECT id FROM users WHERE name LIKE :name")
+        result = db.session.execute(sql, {"name":"%"+friend+"%"})
+        friend_id = result.fetchone()[0]
+    except:
+        return False
+    return friend_id
+
+def add_friend(user_id, friend_id, friend_name):
+    sql = text("""INSERT INTO relations (user_id, friend_id, visible, friend_name)
+                VALUES (:user_id, :friend_id, 1, :friend_name)""")
+    db.session.execute(sql, {"user_id":user_id, "friend_id":friend_id, "friend_name":friend_name})
+    db.session.commit()
+    
