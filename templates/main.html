@@ -9,23 +9,28 @@
 <a href="/login">Kirjaudu sisään</a>
 {% endif %}
 
+<hr>
+
 <p><b>Ystävälista:</b><br>
+<ul>
 {% for friend in friends %}
-{{  friend  }}
+    <li> {{  friend  }} </li>
 {% endfor %}
+</ul>
 </p>
 
 <p>
-    <h3>Etsi käyttäjä</h3>
-
     <form action="/search" method="get">
     Syötä etsimäsi käyttäjän nimi: <br><input type="text" name="search" minlength="3" maxlength="20" value="" placeholder="Etsi käyttäjä">
     <button type="submit" class="btn btn-primary">Lisää ystäväksi</button>
     </form>
 </p>
 
-<b>Treenien määrä:</b> {{ count }} <b> <br>Treenin kesto yhteensä:</b> {{ time }}
+<hr>
+
 <p>
+<b>Treenien määrä:</b> {{ count }} <b> <br>Treenin kesto yhteensä:</b> {{ time }}
+</p>
 
 <p>
 <button onclick="location.href='/form'" type="button">

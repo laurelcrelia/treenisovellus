@@ -43,8 +43,11 @@ def show_friends(user_id):
     sql = text("""SELECT DISTINCT friend_name FROM relations WHERE visible=1
         AND user_id=:user_id""")
     result = db.session.execute(sql, {"user_id":user_id})
-    friends = result.fetchall()[0]
-    return friends
+    friends = result.fetchall()
+    if len(friends) > 0:
+        return friends[0]
+    else:
+        return friends
 
 def search_friend(friend):
     try:
