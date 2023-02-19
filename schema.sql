@@ -1,3 +1,9 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    password TEXT
+);
+
 CREATE TABLE exercises (
     id SERIAL PRIMARY KEY,
     type TEXT, 
@@ -7,12 +13,6 @@ CREATE TABLE exercises (
     visible INTEGER,
     creator_id INTEGER REFERENCES users,
     created_at TIMESTAMP
-);
-
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    name TEXT,
-    password TEXT
 );
 
 CREATE TABLE comments (
