@@ -26,6 +26,5 @@ CREATE TABLE relations (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users,
     friend_id INTEGER REFERENCES users,
-    friend_name TEXT,
-    visible INTEGER
+    friend_name TEXT
 );
