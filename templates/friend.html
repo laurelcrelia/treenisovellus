@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>Käyttäjän {{ name }} etusivu</h1>
+
+
+<a href="/main">Palaa omalle etusivulle</a>
+
+<hr>
+
+<p><b>Ystävälista:</b><br>
+<ul>
+{% for friend in friends %}
+    <li> {{  friend.friend_name  }} </li>
+{% endfor %}
+</ul>
+</p>
+
+<hr>
+
+<p>
+<b>Treenien määrä:</b> {{ count }} <b> <br>Treenin kesto yhteensä:</b> {{ time }}
+</p>
+
+<hr>
+{% for info in information %}
+<b><a href="/exercise/{{ info.id }}/{{ id }}">{{ info.type }}</a></b><br>
+{{ info.hours }}h {{ info.minutes }}min
+<hr>
+{% endfor %}
+</p>
+
+<p>
+<form action="/delete_friend" method="POST"><button name="friend_id" type="submit" value="{{ id }}">Poista {{ name }} ystävälistalta</button></form>
+</p>
+
+{% endblock %}

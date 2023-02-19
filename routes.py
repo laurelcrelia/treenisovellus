@@ -68,16 +68,14 @@ def add_comment():
     timestamp=exercises.get_timestamp(exercise_id, creator_id),
     date=exercises.get_date(exercise_id, creator_id))
 
-@app.route("/show", methods=["POST"])
-def show_exercise():
-    creator_id = users.user_id()
-    if request.method == "POST":
-        exercise_id = request.form["id"]
-    return render_template("exercise.html",
-    information=exercises.get_exercise_info(exercise_id, creator_id),
-    comments=exercises.get_exercise_comments(exercise_id, creator_id),
-    timestamp=exercises.get_timestamp(exercise_id, creator_id),
-    date=exercises.get_date(exercise_id, creator_id))
+@app.route("/exercise/<int:exercise_id>/<int:user_id>")
+def show_exercise(exercise_id, user_id):
+    information = exercises.get_exercise_info(exercise_id, user_id)
+    comments = exercises.get_exercise_comments(exercise_id, user_id)
+    timestamp = exercises.get_timestamp(exercise_id, user_id)
+    date = exercises.get_date(exercise_id, user_id)
+    return render_template("exercise.html", information=information, comments=comments, 
+    timestamp=timestamp, date=date)
 
 @app.route("/index", methods=["GET", "POST"])
 def login():
@@ -138,3 +136,14 @@ def delete_friend():
         users.delete_friend(user_id, friend_id)
 
     return redirect("/main")
+
+@app.route("/friend/<int:friend_id>/<friend_name>")
+def show_friend(friend_id, friend_name):
+    information = exercises.show_exercises(friend_id)
+    count = exercises.count_exercises(friend_id)
+    time = exercises.count_total_time(friend_id)
+    friends = users.show_friends(friend_id)
+    id = friend_id
+    name = friend_name
+    return render_template("friend.html", information=information, count=count, time=time,
+    friends=friends, id=id, name=name)

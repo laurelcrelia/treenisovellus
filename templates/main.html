@@ -14,7 +14,7 @@
 <p><b>Ystävälista:</b><br>
 <ul>
 {% for friend in friends %}
-    <li> {{  friend.friend_name  }} <form action="/delete_friend" method="POST"><button name="friend_id" type="submit" value="{{ friend.friend_id }}">Poista ystävälistalta</button></form> </li>
+    <li><a href="/friend/{{ friend.friend_id}}/{{ friend.friend_name}}">{{ friend.friend_name }}</a></li>
 {% endfor %}
 </ul>
 </p>
@@ -39,11 +39,8 @@
 
 <hr>
 {% for info in information %}
-<b>{{ info.type }}</b><br>
+<b><a href="/exercise/{{ info.id }}/{{ session.user_id }}">{{ info.type }}</a></b><br>
 {{ info.hours }}h {{ info.minutes }}min
-<form action="/show" method="POST">
-<button name="id" type="submit" value="{{ info.id }}">Näytä tiedot</button>
-</form>
 <hr>
 {% endfor %}
 </p>
