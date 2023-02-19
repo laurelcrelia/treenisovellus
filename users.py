@@ -40,27 +40,28 @@ def check_csrf():
         abort(403)
 
 def show_friends(user_id):
-    sql = text("""SELECT DISTINCT friend_name FROM relations WHERE visible=1
-        AND user_id=:user_id""")
+    sql = text("""SELECT DISTINCT friend_id, friend_name FROM relations WHERE user_id=:user_id""")
     result = db.session.execute(sql, {"user_id":user_id})
     friends = result.fetchall()
-    if len(friends) > 0:
-        return friends[0]
-    else:
-        return friends
+    return friends
 
 def search_friend(friend):
     try:
-        sql = text("SELECT id FROM users WHERE name LIKE :name")
-        result = db.session.execute(sql, {"name":"%"+friend+"%"})
+        sql = text("SELECT id FROM users WHERE name=:name")
+        result = db.session.execute(sql, {"name":friend})
         friend_id = result.fetchone()[0]
     except:
         return False
     return friend_id
 
 def add_friend(user_id, friend_id, friend_name):
-    sql = text("""INSERT INTO relations (user_id, friend_id, visible, friend_name)
-                VALUES (:user_id, :friend_id, 1, :friend_name)""")
+    sql = text("""INSERT INTO relations (user_id, friend_id, friend_name)
+                SELECT :user_id, :friend_id, :friend_name WHERE NOT :friend_id IN 
+                (SELECT friend_id FROM relations WHERE user_id=:user_id) AND NOT :user_id=:friend_id""")
     db.session.execute(sql, {"user_id":user_id, "friend_id":friend_id, "friend_name":friend_name})
     db.session.commit()
-    
+
+def delete_friend(user_id, friend_id):
+    sql = text("DELETE FROM relations WHERE user_id=:user_id AND friend_id=:friend_id")
+    db.session.execute(sql, {"user_id":user_id, "friend_id":friend_id})
+    db.session.commit()

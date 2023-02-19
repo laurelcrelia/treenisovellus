@@ -128,3 +128,13 @@ def search_friend():
         else:
             users.add_friend(user_id, users.search_friend(search), search)
             return redirect("/main")
+
+@app.route("/delete_friend", methods=["POST"])
+def delete_friend():
+    user_id = users.user_id()
+
+    if request.method == "POST":
+        friend_id = request.form["friend_id"]
+        users.delete_friend(user_id, friend_id)
+
+    return redirect("/main")

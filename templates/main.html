@@ -14,7 +14,7 @@
 <p><b>Ystävälista:</b><br>
 <ul>
 {% for friend in friends %}
-    <li> {{  friend  }} </li>
+    <li> {{  friend.friend_name  }} <form action="/delete_friend" method="POST"><button name="friend_id" type="submit" value="{{ friend.friend_id }}">Poista ystävälistalta</button></form> </li>
 {% endfor %}
 </ul>
 </p>
