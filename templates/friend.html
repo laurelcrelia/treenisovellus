@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h1>Käyttäjän {{ name }} etusivu</h1>
+<div class="content">
+
+<h2>Käyttäjän {{ name }} etusivu</h2>
 
 
 <a href="/main">Palaa omalle etusivulle</a>
@@ -33,5 +35,7 @@
 <p>
 <form action="/delete_friend" method="POST"><button name="friend_id" type="submit" value="{{ id }}">Poista {{ name }} ystävälistalta</button></form>
 </p>
+
+</div>
 
 {% endblock %}

@@ -1,15 +1,28 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<div class="content">
+
 {% if session.user_id %}
 <title>Etusivu</title>
-<h2>Tervetuloa {{ session.user_name }}!</h2>
+<div class="logout">
 <a href="/logout">Kirjaudu ulos</a>
+</div>
+<h2>Tervetuloa {{ session.user_name }}!</h2>
 {% else %}
 <a href="/login">Kirjaudu sisään</a>
 {% endif %}
 
 <hr>
+
+<p>
+    <div class="friend_search">
+    <form action="/search" method="get">
+    Syötä etsimäsi käyttäjän nimi: <br><input type="text" name="search" minlength="3" maxlength="20" value="" placeholder="Etsi käyttäjä">
+    <button type="submit" class="btn btn-primary">Lisää ystäväksi</button>
+    </form>
+    </div>
+</p>
 
 <p><b>Ystävälista:</b><br>
 <ul>
@@ -17,13 +30,6 @@
     <li><a href="/friend/{{ friend.friend_id}}/{{ friend.friend_name}}">{{ friend.friend_name }}</a></li>
 {% endfor %}
 </ul>
-</p>
-
-<p>
-    <form action="/search" method="get">
-    Syötä etsimäsi käyttäjän nimi: <br><input type="text" name="search" minlength="3" maxlength="20" value="" placeholder="Etsi käyttäjä">
-    <button type="submit" class="btn btn-primary">Lisää ystäväksi</button>
-    </form>
 </p>
 
 <hr>
@@ -44,5 +50,7 @@
 <hr>
 {% endfor %}
 </p>
+
+</div>
 
 {% endblock %}
