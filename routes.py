@@ -11,7 +11,8 @@ def index():
 def main_page():
     creator_id = users.user_id()
     return render_template("main.html", information=exercises.show_exercises(creator_id),
-    count=exercises.count_exercises(creator_id), time=exercises.count_total_time(creator_id), friends=users.show_friends(creator_id))
+    count=exercises.count_exercises(creator_id), time=exercises.count_total_time(creator_id), 
+    friends=users.show_friends(creator_id), requests=users.show_arrived_requests(creator_id))
 
 @app.route("/add", methods=["GET", "POST"])
 def add_exercise():
@@ -125,16 +126,28 @@ def search_friend():
         if not users.search_friend(search):
             return render_template("error.html", message="Syöttämääsi käyttäjää ei löydy järjestelmästä")
         else:
-            users.add_friend(user_id, users.search_friend(search), search)
+            users.send_request(user_id, users.search_friend(search))
             return redirect("/main")
+        
+@app.route("/requests", methods=["POST"])
+def process_request():
+    user_id = users.user_id()
+    request_id = request.form["id"]
+    choice = request.form["choice"]
+    friend_id = request.form["friend"]
+    if request.method == "POST":
+        users.delete_request(request_id)
+        if str(choice) == "Hyväksy":
+            users.add_friendship(user_id, friend_id)
+        return redirect("/main")
 
 @app.route("/delete_friend", methods=["POST"])
-def delete_friend():
+def delete_friendship():
     user_id = users.user_id()
 
     if request.method == "POST":
         friend_id = request.form["friend_id"]
-        users.delete_friend(user_id, friend_id)
+        users.delete_friendship(user_id, friend_id)
 
     return redirect("/main")
 

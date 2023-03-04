@@ -40,10 +40,18 @@ def check_csrf():
         abort(403)
 
 def show_friends(user_id):
-    sql = text("""SELECT DISTINCT friend_id, friend_name FROM relations WHERE user_id=:user_id""")
+    sql = text("""SELECT DISTINCT r.friend_id, u.name FROM relations r, users u 
+    WHERE r.user_id=:user_id AND u.id=r.friend_id""")
     result = db.session.execute(sql, {"user_id":user_id})
     friends = result.fetchall()
     return friends
+
+def show_arrived_requests(user_id):
+    sql = text("""SELECT u.name, r.id, r.requestor FROM requests r, users u 
+    WHERE r.receiver=:user_id AND u.id=r.requestor""")
+    result = db.session.execute(sql, {"user_id":user_id})
+    arrived_requests = result.fetchall()
+    return arrived_requests
 
 def search_friend(friend):
     try:
@@ -54,14 +62,29 @@ def search_friend(friend):
         return False
     return friend_id
 
-def add_friend(user_id, friend_id, friend_name):
-    sql = text("""INSERT INTO relations (user_id, friend_id, friend_name)
-                SELECT :user_id, :friend_id, :friend_name WHERE NOT :friend_id IN 
-                (SELECT friend_id FROM relations WHERE user_id=:user_id) AND NOT :user_id=:friend_id""")
-    db.session.execute(sql, {"user_id":user_id, "friend_id":friend_id, "friend_name":friend_name})
+def send_request(user_id, friend_id):
+    sql = text("""INSERT INTO requests (requestor, receiver)
+                VALUES (:user_id, :friend_id)""")
+    db.session.execute(sql, {"user_id":user_id, "friend_id":friend_id})
     db.session.commit()
 
-def delete_friend(user_id, friend_id):
+def delete_request(request_id):
+    sql = text("""DELETE FROM requests WHERE id=:request_id""")
+    db.session.execute(sql, {"request_id":request_id})
+    db.session.commit()
+
+def add_friendship(user_id, friend_id):
+    sql1 = text("""INSERT INTO relations (user_id, friend_id)
+                SELECT :user_id, :friend_id WHERE NOT :friend_id IN 
+                (SELECT friend_id FROM relations WHERE user_id=:user_id) AND NOT :user_id=:friend_id""")
+    sql2 = text("""INSERT INTO relations (user_id, friend_id)
+                SELECT :user_id, :friend_id WHERE NOT :friend_id IN 
+                (SELECT friend_id FROM relations WHERE user_id=:user_id) AND NOT :user_id=:friend_id""")
+    db.session.execute(sql1, {"user_id":user_id, "friend_id":friend_id})
+    db.session.execute(sql2, {"user_id":friend_id, "friend_id":user_id})
+    db.session.commit()
+
+def delete_friendship(user_id, friend_id):
     sql = text("DELETE FROM relations WHERE user_id=:user_id AND friend_id=:friend_id")
     db.session.execute(sql, {"user_id":user_id, "friend_id":friend_id})
     db.session.commit()

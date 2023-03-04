@@ -25,6 +25,11 @@ CREATE TABLE comments (
 CREATE TABLE relations (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users,
-    friend_id INTEGER REFERENCES users,
-    friend_name TEXT
+    friend_id INTEGER REFERENCES users
+);
+
+CREATE TABLE requests (
+    id SERIAL PRIMARY KEY,
+    requestor INTEGER REFERENCES users,
+    receiver INTEGER REFERENCES users
 );

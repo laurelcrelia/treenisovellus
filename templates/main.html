@@ -19,15 +19,28 @@
     <div class="friend_search">
     <form action="/search" method="get">
     Syötä etsimäsi käyttäjän nimi: <br><input type="text" name="search" minlength="3" maxlength="20" value="" placeholder="Etsi käyttäjä">
-    <button type="submit" class="btn btn-primary">Lisää ystäväksi</button>
+    <button type="submit" class="btn btn-primary">Lähetä kaveripyyntö</button>
     </form>
     </div>
 </p>
 
-<p><b>Ystävälista:</b><br>
+<p><b>Kaveripyynnöt:</b><br>
+{% for request in requests %}
+    {{ request.name }}
+        <form action="/requests" method="post">
+            <input type="radio" name="choice" value="Hyväksy"> Hyväksy
+            <input type="radio" name="choice" value="Hylkää"> Hylkää
+            <input type="submit" value="Valitse">
+            <input type="hidden" name="id" value="{{ request.id }}"/>
+            <input type="hidden" name="friend" value="{{ request.requestor }}"/>
+            </form>
+{% endfor %}
+</p>
+
+<p><b>Kaverilista:</b><br>
 <ul>
 {% for friend in friends %}
-    <li><a href="/friend/{{ friend.friend_id}}/{{ friend.friend_name}}">{{ friend.friend_name }}</a></li>
+    <li><a href="/friend/{{ friend.friend_id}}/{{ friend.name}}">{{ friend.name }}</a></li>
 {% endfor %}
 </ul>
 </p>
