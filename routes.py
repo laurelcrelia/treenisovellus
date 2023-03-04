@@ -13,30 +13,31 @@ def main_page():
     return render_template("main.html", information=exercises.show_exercises(creator_id),
     count=exercises.count_exercises(creator_id), time=exercises.count_total_time(creator_id), friends=users.show_friends(creator_id))
 
-@app.route("/form")
-def form():
-    return render_template("form.html")
-
-@app.route("/add", methods=["POST"])
+@app.route("/add", methods=["GET", "POST"])
 def add_exercise():
-    exercise_type = request.form["type"]
-    date = request.form["date"]
 
-    hours = request.form["hours"]
-    if int(hours) > 24:
-        return render_template("error.html", message="Virheellinen tuntimäärä")
+    if request.method == "GET":
+        return render_template("form.html")
+    
+    if request.method == "POST":
+        exercise_type = request.form["type"]
+        date = request.form["date"]
 
-    minutes = request.form["minutes"]
-    if int(minutes) > 59:
-        return render_template("error.html", message="Virheellinen minuuttimäärä")
+        hours = request.form["hours"]
+        if int(hours) > 24:
+            return render_template("error.html", message="Virheellinen tuntimäärä")
 
-    comment = request.form["comment"]
-    if len(comment) > 1000:
-        return render_template("error.html", message="Kommentti ylitti sallitun merkkimäärän")
+        minutes = request.form["minutes"]
+        if int(minutes) > 59:
+            return render_template("error.html", message="Virheellinen minuuttimäärä")
 
-    creator_id = users.user_id()
-    exercise_id = exercises.add_exercise(exercise_type, date, hours, minutes, creator_id)
-    exercises.add_comment(creator_id, exercise_id, comment)
+        comment = request.form["comment"]
+        if len(comment) > 1000:
+            return render_template("error.html", message="Kommentti ylitti sallitun merkkimäärän")
+
+        creator_id = users.user_id()
+        exercise_id = exercises.add_exercise(exercise_type, date, hours, minutes, creator_id)
+        exercises.add_comment(creator_id, exercise_id, comment)
 
     return redirect("/main")
 

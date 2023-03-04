@@ -83,8 +83,6 @@ def add_exercise(exercise_type, date, hours, minutes, creator_id):
         created_at) VALUES (:type, :date, :hours, :minutes, 1, :creator_id, NOW()) RETURNING id""")
     exercise_id = db.session.execute(sql, {"type":exercise_type,"date":date, "hours":hours,
     "minutes":minutes, "creator_id":creator_id}).fetchone()[0]
-    db.session.execute(sql, {"type":exercise_type,"date":date, "hours":hours, "minutes":minutes,
-    "creator_id":creator_id})
     db.session.commit()
     return exercise_id
 
