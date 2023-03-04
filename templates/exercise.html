@@ -20,6 +20,7 @@
 <p><form action="/comment" method="POST">
 <textarea name="comment" rows="3" cols="50" maxlength="1000"></textarea>
 <button name="id" type="submit" value="{{ info.id }}">Lisää kommentti</button>
+<input type="hidden" name="owner" value="{{ owner }}"/>
 </form></p>
 
 <hr>

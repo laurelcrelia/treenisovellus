@@ -64,22 +64,19 @@ def add_comment():
 
     if request.method == "POST":
         exercise_id = request.form["id"]
+        exercise_owner = request.form["owner"]
         exercises.add_comment(creator_id, exercise_id, comment)
 
-    return render_template("exercise.html",
-    information=exercises.get_exercise_info(exercise_id, creator_id),
-    comments=exercises.get_exercise_comments(exercise_id, creator_id),
-    timestamp=exercises.get_timestamp(exercise_id, creator_id),
-    date=exercises.get_date(exercise_id, creator_id))
+    return redirect("/exercise/"+str(exercise_id)+"/"+str(exercise_owner))
 
 @app.route("/exercise/<int:exercise_id>/<int:user_id>")
 def show_exercise(exercise_id, user_id):
     information = exercises.get_exercise_info(exercise_id, user_id)
-    comments = exercises.get_exercise_comments(exercise_id, user_id)
+    comments = exercises.get_exercise_comments(exercise_id)
     timestamp = exercises.get_timestamp(exercise_id, user_id)
     date = exercises.get_date(exercise_id, user_id)
     return render_template("exercise.html", information=information, comments=comments, 
-    timestamp=timestamp, date=date)
+    timestamp=timestamp, date=date, owner=user_id)
 
 @app.route("/index", methods=["GET", "POST"])
 def login():

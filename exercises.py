@@ -15,10 +15,10 @@ def get_exercise_info(exercise_id, creator_id):
     exercise_information = result.fetchall()
     return exercise_information
 
-def get_exercise_comments(exercise_id, creator_id):
-    sql = text("""SELECT c.comment, u.name FROM comments c, users u WHERE c.exercise_id=:id
-        AND c.user_id=:creator_id AND u.id=:creator_id""")
-    result = db.session.execute(sql, {"id":exercise_id, "creator_id":creator_id})
+def get_exercise_comments(exercise_id):
+    sql = text("""SELECT c.comment, u.name FROM comments c, users u 
+    WHERE c.exercise_id=:id AND u.id=c.user_id""")
+    result = db.session.execute(sql, {"id":exercise_id})
     exercise_comments = result.fetchall()
     return exercise_comments
 
