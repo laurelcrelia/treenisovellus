@@ -15,6 +15,7 @@ def main_page():
 
 @app.route("/add", methods=["GET", "POST"])
 def add_exercise():
+    creator_id = users.user_id()
 
     if request.method == "GET":
         return render_template("form.html")
@@ -32,12 +33,14 @@ def add_exercise():
             return render_template("error.html", message="Virheellinen minuuttimäärä")
 
         comment = request.form["comment"]
-        if len(comment) > 1000:
-            return render_template("error.html", message="Kommentti ylitti sallitun merkkimäärän")
-
-        creator_id = users.user_id()
-        exercise_id = exercises.add_exercise(exercise_type, date, hours, minutes, creator_id)
-        exercises.add_comment(creator_id, exercise_id, comment)
+        if len(comment):
+            if len(comment) > 1000:
+                return render_template("error.html", message="Kommentti ylitti sallitun merkkimäärän")
+            else:
+                exercise_id = exercises.add_exercise(exercise_type, date, hours, minutes, creator_id)
+                exercises.add_comment(creator_id, exercise_id, comment)
+        else:
+            exercises.add_exercise(exercise_type, date, hours, minutes, creator_id)
 
     return redirect("/main")
 
