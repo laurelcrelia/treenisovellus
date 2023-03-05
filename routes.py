@@ -63,6 +63,9 @@ def add_comment():
 
     if len(comment) > 1000:
         return render_template("error.html", message="Kommentti ylitti sallitun merkkimäärän")
+    
+    if len(comment) == 0:
+        return render_template("error.html", message="Kommentissa tulee olla sisältö")
 
     if request.method == "POST":
         exercise_id = request.form["id"]
