@@ -108,7 +108,7 @@ def delete_comment():
 @app.route("/exercise/<int:exercise_id>/<int:user_id>")
 def show_exercise(exercise_id, user_id):
     current_id = users.get_id()
-    if not users.is_friend(current_id, user_id) and current_id != user_id:
+    if not users.is_friend(current_id, user_id):
         return render_template("error.html", message="Ei oikeutta nähdä sivua")
     else:
         information = exercises.get_exercise_info(exercise_id, user_id)

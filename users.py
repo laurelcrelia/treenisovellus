@@ -40,9 +40,9 @@ def check_csrf():
         abort(403)
 
 def is_friend(owner_id, friend_id):
-    if get_id() and owner_id == id:
+    if get_id() and owner_id == friend_id:
         return True
-    elif get_id():
+    if get_id():
         sql = text("""SELECT id FROM relations WHERE user_id=:owner_id
         AND friend_id=:friend_id""")
         result = db.session.execute(sql, {"owner_id":owner_id, "friend_id":friend_id})
