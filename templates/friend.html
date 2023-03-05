@@ -1,6 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<div class="nav">
+    <nav>
+        <ul>
+            <li><a href="/main">Etusivu</a></li>
+            <li><a href="/exercises">Treenit</a></li>
+            <li><a href="/friends">Kaverit</a></li>
+            <div class="logout"><li><a href="/logout">Kirjaudu ulos</a></li></div>
+        </ul>
+    </nav>
+</div>
+
 <div class="content">
 
 <h2>Käyttäjän {{ friend_name }} etusivu</h2>

@@ -24,14 +24,21 @@
 </p>
 
 <p><b>Kaverilista:</b><br>
+{% if not friends %}
+<p>Kaverilistasi on tyhjä.</p>
+{% else %}
 <ul>
 {% for friend in friends %}
     <li><a href="/friend/{{ friend.friend_id}}/{{ friend.name}}">{{ friend.name }}</a></li>
 {% endfor %}
+{% endif %}
 </ul>
 </p>
 
 <p><b>Kaveripyynnöt:</b><br>
+{% if not requests %}
+<p>Sinulle ei ole saapunut uusia kaveripyyntöjä.</p>
+{% else %}
 {% for request in requests %}
     {{ request.name }}
         <form action="/requests" method="post">
@@ -43,6 +50,7 @@
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             </form>
 {% endfor %}
+{% endif %}
 </p>
 
 </div>
