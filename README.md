@@ -6,13 +6,15 @@ Sovellus on treenipäiväkirja tyylinen toteutus, jolla voi pitää kirjaa tehdy
 - Käyttäjä voi luoda tunnuksen, jolla voi kirjautua sisään sekä ulos.
 - Käyttäjä voi lisätä uuden treenin.
 - Käyttäjä voi poistaa treenin.
-- Käyttäjä näkee etusivullaan treenit kronologisessa järjestyksessä niin että uusin treeni näkyy ensin ja vanhin viimeisenä.
-- Käyttäjä näkee etusivullaan myös koosteosion jossa lukee kaikkien omien treenien kokonaiskesto ja treenien lukumäärä.
+- Käyttäjä näkee treenit-osiossa kaikki lisäämänsä treenit kronologisessa järjestyksessä niin että uusin treeni näkyy ensin ja vanhin viimeisenä.
+- Käyttäjä näkee etusivullaan koosteosion jossa lukee kaikkien omien treenien kokonaiskesto ja treenien lukumäärä.
 - Treenille tulee sen luomishetkellä määritellä päivämäärä, treenin kesto tunteina ja minuutteina sekä laji. Nämä tiedot tallentuvat tietokantaan.
 - Käyttäjä voi lähettää kaveripyynnön toiselle käyttäjälle etsimällä tämän käyttäjätunnuksen järjestelmästä.
-- Kaverisuhde varmistuu kun kyseinen käyttäjä käy hyväksymässä lähettämäsi kaveripyynnön.
+- Kaverisuhde varmistuu kun toinen käyttäjä käy hyväksymässä lähettämäsi kaveripyynnön.
+- Käyttäjä voi poistaa kaverin ja tällöin kaverisuhde katoaa molemmilta.
 - Käyttäjä voi tarkastella kaverin etusivua ja treenejä.
 - Sekä omalle että kaverin treenille voi lisätä kommentin.
+- Oman kommentin voi poistaa.
 
 ## Ohjeet sovelluksen käynnistämiseen paikallisesti
 
@@ -28,18 +30,18 @@ Sovellus on treenipäiväkirja tyylinen toteutus, jolla voi pitää kirjaa tehdy
 4) Avaa taas uusi komentorivi-ikkuna ja avaa PostgreSQL-tulkki komennolla    
     ```$ psql```    
   Luo nyt uusi tietokanta sovellusta varten komennolla    
-    ```$ CREATE DATABASE <tietokannan nimi>;```
+    ```user=# CREATE DATABASE <tietokannan nimi>;```
 
 5) Siirry sovelluksen juurikansioon ja luo sinne .env-tiedosto.   
   Määritä tiedoston sisältö seuraavanlaiseksi, mikäli asensit PostgreSQL:n ensimmäisen linkin ohjeen avulla:    
   ```
-  DATABASE_URL=postgresql+psycopg2:///\<tietokannan nimi>    
-  SECRET_KEY=\<salainen-avain>
+  DATABASE_URL=postgresql+psycopg2:///<tietokannan nimi>    
+  SECRET_KEY=<salainen-avain>
   ```
   Muuten:   
   ```
-  DATABASE_URL=postgresql:///\<tietokannan nimi>   
-  SECRET_KEY=\<salainen-avain>
+  DATABASE_URL=postgresql:///<tietokannan nimi>   
+  SECRET_KEY=<salainen-avain>
   ```
 
 6) Aktivoi virtuaaliympäristö ja asenna sovelluksen riippuvuudet komennoilla    
@@ -48,10 +50,12 @@ Sovellus on treenipäiväkirja tyylinen toteutus, jolla voi pitää kirjaa tehdy
   ```$ pip install -r ./requirements.txt```
 
 
-7) Määritä vielä tietokannan skeema sovelluksen juurihakemistossa komennolla    
-```$ psql -d <tietokannan nimi> < schema.sql```   
+7) Määritä tietokannan skeema sovelluksen juurihakemistossa komennolla    
+```$ psql -d <tietokannan nimi> < schema.sql```  
 
+8) Käynnistä vielä aiemmin nimeämäsi tietokanta PostgreSQL-tulkissa komennolla    
+```user=# \connect <tietokannan nimi>;```  
 
-8) Nyt voit ajaa sovelluksen komennolla   
+9) Nyt voit ajaa sovelluksen sen juurihakemistossa komennolla   
 ```$ flask run```
 
