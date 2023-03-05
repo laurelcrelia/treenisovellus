@@ -9,7 +9,7 @@ def show_exercises(creator_id):
     return exercise_information
 
 def get_exercise_info(exercise_id, creator_id):
-    sql = text("""SELECT e.id, e.type, e.date, e.hours, e.minutes, e.created_at, u.name 
+    sql = text("""SELECT e.id, e.type, e.date, e.hours, e.minutes, e.created_at, u.name
     FROM exercises e, users u WHERE e.visible=1 AND e.id=:id AND e.creator_id=:creator_id 
     AND u.id=creator_id""")
     result = db.session.execute(sql, {"id":exercise_id, "creator_id":creator_id})
@@ -17,25 +17,26 @@ def get_exercise_info(exercise_id, creator_id):
     return exercise_information
 
 def get_exercise_comments(exercise_id):
-    sql = text("""SELECT c.comment, u.name FROM comments c, users u 
+    sql = text("""SELECT c.comment, u.name FROM comments c, users u
     WHERE c.exercise_id=:id AND u.id=c.user_id""")
     result = db.session.execute(sql, {"id":exercise_id})
     exercise_comments = result.fetchall()
     return exercise_comments
 
 def get_date(exercise_id, creator_id):
-    sql = text("SELECT date FROM exercises WHERE visible=1 AND id=:id AND creator_id=:creator_id")
+    sql = text("""SELECT date FROM exercises WHERE visible=1 AND id=:id
+               AND creator_id=:creator_id""")
     result = db.session.execute(sql, {"id":exercise_id, "creator_id":creator_id})
     date = result.fetchall()[0][0]
-    int_form = date.strftime('%Y%m%d')
+    int_form = date.strftime("%Y%m%d")
     return convert_date(int_form, "date")
 
 def get_timestamp(exercise_id, creator_id):
     sql = text("""SELECT created_at FROM exercises WHERE visible=1 AND id=:id AND
-        creator_id=:creator_id""")
+    creator_id=:creator_id""")
     result = db.session.execute(sql, {"id":exercise_id, "creator_id":creator_id})
     timestamp = result.fetchall()[0][0]
-    int_form = timestamp.strftime('%Y%m%d%H%M')
+    int_form = timestamp.strftime("%Y%m%d%H%M")
     return convert_date(int_form, "timestamp")
 
 def convert_date(int_form, exercise_type):

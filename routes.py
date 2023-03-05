@@ -9,18 +9,18 @@ def index():
 
 @app.route("/main")
 def main_page():
-    creator_id = users.user_id()
+    creator_id = users.get_id()
     return render_template("main.html", information=exercises.show_exercises(creator_id),
-    count=exercises.count_exercises(creator_id), time=exercises.count_total_time(creator_id), 
+    count=exercises.count_exercises(creator_id), time=exercises.count_total_time(creator_id),
     friends=users.show_friends(creator_id), requests=users.show_arrived_requests(creator_id))
 
 @app.route("/add", methods=["GET", "POST"])
 def add_exercise():
-    creator_id = users.user_id()
+    creator_id = users.get_id()
 
     if request.method == "GET":
         return render_template("form.html")
-    
+
     if request.method == "POST":
         exercise_type = request.form["type"]
         date = request.form["date"]
@@ -36,10 +36,11 @@ def add_exercise():
         comment = request.form["comment"]
         if len(comment):
             if len(comment) > 1000:
-                return render_template("error.html", message="Kommentti ylitti sallitun merkkimäärän")
-            else:
-                exercise_id = exercises.add_exercise(exercise_type, date, hours, minutes, creator_id)
-                exercises.add_comment(creator_id, exercise_id, comment)
+                return render_template("error.html", message=
+                                       "Kommentti ylitti sallitun merkkimäärän")
+            exercise_id = exercises.add_exercise(exercise_type, date,
+                                                 hours, minutes, creator_id)
+            exercises.add_comment(creator_id, exercise_id, comment)
         else:
             exercises.add_exercise(exercise_type, date, hours, minutes, creator_id)
 
@@ -47,7 +48,7 @@ def add_exercise():
 
 @app.route("/delete", methods=["POST"])
 def delete_exercise():
-    creator_id = users.user_id()
+    creator_id = users.get_id()
 
     if request.method == "POST":
         exercise_id = request.form["id"]
@@ -57,7 +58,7 @@ def delete_exercise():
 
 @app.route("/comment", methods=["POST"])
 def add_comment():
-    creator_id = users.user_id()
+    creator_id = users.get_id()
     comment = request.form["comment"]
 
     if len(comment) > 1000:
@@ -76,7 +77,7 @@ def show_exercise(exercise_id, user_id):
     comments = exercises.get_exercise_comments(exercise_id)
     timestamp = exercises.get_timestamp(exercise_id, user_id)
     date = exercises.get_date(exercise_id, user_id)
-    return render_template("exercise.html", information=information, comments=comments, 
+    return render_template("exercise.html", information=information, comments=comments,
     timestamp=timestamp, date=date, owner=user_id)
 
 @app.route("/index", methods=["GET", "POST"])
@@ -120,18 +121,18 @@ def register():
 
 @app.route("/search", methods=["GET"])
 def search_friend():
-    user_id = users.user_id()
+    user_id = users.get_id()
     search = request.args["search"]
     if request.method == "GET":
         if not users.search_friend(search):
-            return render_template("error.html", message="Syöttämääsi käyttäjää ei löydy järjestelmästä")
-        else:
-            users.send_request(user_id, users.search_friend(search))
-            return redirect("/main")
-        
+            return render_template("error.html", message=
+                                   "Syöttämääsi käyttäjää ei löydy järjestelmästä")
+        users.send_request(user_id, users.search_friend(search))
+        return redirect("/main")
+
 @app.route("/requests", methods=["POST"])
 def process_request():
-    user_id = users.user_id()
+    user_id = users.get_id()
     request_id = request.form["id"]
     choice = request.form["choice"]
     friend_id = request.form["friend"]
@@ -143,7 +144,7 @@ def process_request():
 
 @app.route("/delete_friend", methods=["POST"])
 def delete_friendship():
-    user_id = users.user_id()
+    user_id = users.get_id()
 
     if request.method == "POST":
         friend_id = request.form["friend_id"]
@@ -157,7 +158,5 @@ def show_friend(friend_id, friend_name):
     count = exercises.count_exercises(friend_id)
     time = exercises.count_total_time(friend_id)
     friends = users.show_friends(friend_id)
-    id = friend_id
-    name = friend_name
     return render_template("friend.html", information=information, count=count, time=time,
-    friends=friends, id=id, name=name)
+    friends=friends, friend_id=friend_id, friend_name=friend_name)

@@ -32,7 +32,7 @@ def register(name, password):
         return False
     return login(name, password)
 
-def user_id():
+def get_id():
     return session.get("user_id", 0)
 
 def check_csrf():
@@ -40,14 +40,14 @@ def check_csrf():
         abort(403)
 
 def show_friends(user_id):
-    sql = text("""SELECT DISTINCT r.friend_id, u.name FROM relations r, users u 
+    sql = text("""SELECT DISTINCT r.friend_id, u.name FROM relations r, users u
     WHERE r.user_id=:user_id AND u.id=r.friend_id""")
     result = db.session.execute(sql, {"user_id":user_id})
     friends = result.fetchall()
     return friends
 
 def show_arrived_requests(user_id):
-    sql = text("""SELECT u.name, r.id, r.requestor FROM requests r, users u 
+    sql = text("""SELECT u.name, r.id, r.requestor FROM requests r, users u
     WHERE r.receiver=:user_id AND u.id=r.requestor""")
     result = db.session.execute(sql, {"user_id":user_id})
     arrived_requests = result.fetchall()
@@ -76,10 +76,12 @@ def delete_request(request_id):
 def add_friendship(user_id, friend_id):
     sql1 = text("""INSERT INTO relations (user_id, friend_id)
                 SELECT :user_id, :friend_id WHERE NOT :friend_id IN 
-                (SELECT friend_id FROM relations WHERE user_id=:user_id) AND NOT :user_id=:friend_id""")
+                (SELECT friend_id FROM relations WHERE user_id=:user_id) 
+                AND NOT :user_id=:friend_id""")
     sql2 = text("""INSERT INTO relations (user_id, friend_id)
                 SELECT :user_id, :friend_id WHERE NOT :friend_id IN 
-                (SELECT friend_id FROM relations WHERE user_id=:user_id) AND NOT :user_id=:friend_id""")
+                (SELECT friend_id FROM relations WHERE user_id=:user_id) 
+                AND NOT :user_id=:friend_id""")
     db.session.execute(sql1, {"user_id":user_id, "friend_id":friend_id})
     db.session.execute(sql2, {"user_id":friend_id, "friend_id":user_id})
     db.session.commit()
