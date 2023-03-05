@@ -22,6 +22,8 @@ def add_exercise():
         return render_template("form.html")
 
     if request.method == "POST":
+        users.check_csrf()
+
         exercise_type = request.form["type"]
         date = request.form["date"]
 
@@ -51,6 +53,8 @@ def delete_exercise():
     creator_id = users.get_id()
 
     if request.method == "POST":
+        users.check_csrf()
+
         exercise_id = request.form["id"]
         exercises.delete_exercise(exercise_id, creator_id)
 
@@ -68,6 +72,8 @@ def add_comment():
         return render_template("error.html", message="Kommentissa tulee olla sisältö")
 
     if request.method == "POST":
+        users.check_csrf()
+        
         exercise_id = request.form["id"]
         exercise_owner = request.form["owner"]
         exercises.add_comment(creator_id, exercise_id, comment)
@@ -143,7 +149,10 @@ def process_request():
     request_id = request.form["id"]
     choice = request.form["choice"]
     friend_id = request.form["friend"]
+
     if request.method == "POST":
+        users.check_csrf()
+
         users.delete_request(request_id)
         if str(choice) == "Hyväksy":
             users.add_friendship(user_id, friend_id)
@@ -154,6 +163,8 @@ def delete_friendship():
     user_id = users.get_id()
 
     if request.method == "POST":
+        users.check_csrf()
+        
         friend_id = request.form["friend_id"]
         users.delete_friendship(user_id, friend_id)
 

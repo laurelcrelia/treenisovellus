@@ -21,12 +21,14 @@
 <textarea name="comment" rows="3" cols="50" maxlength="1000"></textarea>
 <button name="id" type="submit" value="{{ info.id }}">Lisää kommentti</button>
 <input type="hidden" name="owner" value="{{ owner }}"/>
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form></p>
 
 <hr>
 {% if session.user_id == owner %}
 <p><form action="/delete" method="POST">
 <button name="id" type="submit" value="{{ info.id }}">Poista treeni</button>
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form></p>
 
 <a href="/main">Palaa omalle etusivulle</a>

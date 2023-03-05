@@ -33,6 +33,7 @@
             <input type="submit" value="Valitse">
             <input type="hidden" name="id" value="{{ request.id }}"/>
             <input type="hidden" name="friend" value="{{ request.requestor }}"/>
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             </form>
 {% endfor %}
 </p>
