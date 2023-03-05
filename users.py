@@ -39,6 +39,18 @@ def check_csrf():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
+def is_friend(owner_id, friend_id):
+    if get_id() and owner_id == id:
+        return True
+    elif get_id():
+        sql = text("""SELECT id FROM relations WHERE user_id=:owner_id
+        AND friend_id=:friend_id""")
+        result = db.session.execute(sql, {"owner_id":owner_id, "friend_id":friend_id})
+        if result.fetchone():
+            return True
+    else:
+        return False
+
 def show_friends(user_id):
     sql = text("""SELECT DISTINCT r.friend_id, u.name FROM relations r, users u
     WHERE r.user_id=:user_id AND u.id=r.friend_id""")

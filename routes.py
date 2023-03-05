@@ -154,9 +154,13 @@ def delete_friendship():
 
 @app.route("/friend/<int:friend_id>/<friend_name>")
 def show_friend(friend_id, friend_name):
-    information = exercises.show_exercises(friend_id)
-    count = exercises.count_exercises(friend_id)
-    time = exercises.count_total_time(friend_id)
-    friends = users.show_friends(friend_id)
-    return render_template("friend.html", information=information, count=count, time=time,
-    friends=friends, friend_id=friend_id, friend_name=friend_name)
+    user_id = users.get_id()
+    if not users.is_friend(user_id, friend_id):
+        return render_template("error.html", message="Ei oikeutta nähdä sivua")
+    else:
+        information = exercises.show_exercises(friend_id)
+        count = exercises.count_exercises(friend_id)
+        time = exercises.count_total_time(friend_id)
+        friends = users.show_friends(friend_id)
+        return render_template("friend.html", information=information, count=count, time=time,
+        friends=friends, friend_id=friend_id, friend_name=friend_name)
