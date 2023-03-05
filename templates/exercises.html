@@ -13,12 +13,16 @@
 </div>
 
 <div class="content">
-    
+
+{% if not information %}
+<p>Et ole luonut vielä yhtäkään treeniä.</p>
+{% else %}
 {% for info in information %}
 <b><a href="/exercise/{{ info.id }}/{{ session.user_id }}">{{ info.type }}</a></b><br>
 {{ info.hours }}h {{ info.minutes }}min
 <hr>
 {% endfor %}
+{% endif %}
 </p>
 
 
