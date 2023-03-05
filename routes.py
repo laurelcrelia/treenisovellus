@@ -12,7 +12,18 @@ def main_page():
     creator_id = users.get_id()
     return render_template("main.html", information=exercises.show_exercises(creator_id),
     count=exercises.count_exercises(creator_id), time=exercises.count_total_time(creator_id),
-    friends=users.show_friends(creator_id), requests=users.show_arrived_requests(creator_id))
+    friends=users.show_friends(creator_id))
+
+@app.route("/exercises")
+def exercises_page():
+    creator_id = users.get_id()
+    return render_template("exercises.html", information=exercises.show_exercises(creator_id))
+
+@app.route("/friends")
+def friends():
+    creator_id = users.get_id()
+    return render_template("friends.html", friends=users.show_friends(creator_id), 
+                           requests=users.show_arrived_requests(creator_id))
 
 @app.route("/add", methods=["GET", "POST"])
 def add_exercise():
@@ -170,7 +181,7 @@ def process_request():
         users.delete_request(request_id)
         if str(choice) == "Hyväksy":
             users.add_friendship(user_id, friend_id)
-        return redirect("/main")
+        return redirect("/friends")
 
 @app.route("/delete_friend", methods=["POST"])
 def delete_friendship():

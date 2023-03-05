@@ -13,23 +13,13 @@
 </div>
 
 <div class="content">
-
-{% if session.user_id %}
-<title>Etusivu</title>
-<h2>Tervetuloa {{ session.user_name }}!</h2>
-{% else %}
-<a href="/login">Kirjaudu sisään</a>
-{% endif %}
-
+    
+{% for info in information %}
+<b><a href="/exercise/{{ info.id }}/{{ session.user_id }}">{{ info.type }}</a></b><br>
+{{ info.hours }}h {{ info.minutes }}min
 <hr>
-
-<p>
-<b>Treenien määrä:</b> {{ count }} <b> <br>Treenien kesto yhteensä:</b> {{ time }}
+{% endfor %}
 </p>
-
-<form action="/add" method="get">
-    <input type="submit" value="Lisää uusi treeni">
-    </form>
 
 
 </div>

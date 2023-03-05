@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="nav">
+    <nav>
+        <ul>
+            <li><a href="/main">Etusivu</a></li>
+            <li><a href="/exercises">Treenit</a></li>
+            <li><a href="/friends">Kaverit</a></li>
+            <div class="logout"><li><a href="/logout">Kirjaudu ulos</a></li></div>
+        </ul>
+    </nav>
+</div>
+
+<div class="content">
+
+<p>
+    <div class="friend_search">
+    <form action="/search" method="get">
+    Syötä etsimäsi käyttäjän nimi: <br><input type="text" name="search" minlength="3" maxlength="20" value="" placeholder="Etsi käyttäjä">
+    <button type="submit" class="btn btn-primary">Lähetä kaveripyyntö</button>
+    </form>
+    </div>
+</p>
+
+<p><b>Kaverilista:</b><br>
+<ul>
+{% for friend in friends %}
+    <li><a href="/friend/{{ friend.friend_id}}/{{ friend.name}}">{{ friend.name }}</a></li>
+{% endfor %}
+</ul>
+</p>
+
+<p><b>Kaveripyynnöt:</b><br>
+{% for request in requests %}
+    {{ request.name }}
+        <form action="/requests" method="post">
+            <input type="radio" name="choice" value="Hyväksy" checked> Hyväksy
+            <input type="radio" name="choice" value="Hylkää"> Hylkää
+            <input type="submit" value="Valitse">
+            <input type="hidden" name="id" value="{{ request.id }}"/>
+            <input type="hidden" name="friend" value="{{ request.requestor }}"/>
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            </form>
+{% endfor %}
+</p>
+
+</div>
+
+{% endblock %}
