@@ -42,7 +42,7 @@
 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form></p>
 
-<a href="/main">Palaa omalle etusivulle</a>
+<a href="/exercises">Palaa treenilistaan</a>
 {% else %}
 <a href="/friend/{{ owner }}/{{ info.name }}">Palaa käyttäjän {{ info.name }} etusivulle</a>
 {% endif %}
