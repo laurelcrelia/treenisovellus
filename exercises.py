@@ -9,8 +9,9 @@ def show_exercises(creator_id):
     return exercise_information
 
 def get_exercise_info(exercise_id, creator_id):
-    sql = text("""SELECT id, type, date, hours, minutes, created_at FROM exercises WHERE visible=1
-        AND id=:id AND creator_id=:creator_id""")
+    sql = text("""SELECT e.id, e.type, e.date, e.hours, e.minutes, e.created_at, u.name 
+    FROM exercises e, users u WHERE e.visible=1 AND e.id=:id AND e.creator_id=:creator_id 
+    AND u.id=creator_id""")
     result = db.session.execute(sql, {"id":exercise_id, "creator_id":creator_id})
     exercise_information = result.fetchall()
     return exercise_information

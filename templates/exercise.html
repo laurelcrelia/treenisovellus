@@ -28,11 +28,12 @@
 <p><form action="/delete" method="POST">
 <button name="id" type="submit" value="{{ info.id }}">Poista treeni</button>
 </form></p>
-{% endif %}
-{% endfor %}
-</p>
 
 <a href="/main">Palaa omalle etusivulle</a>
+{% else %}
+<a href="/friend/{{ owner }}/{{ info.name }}">Palaa käyttäjän {{ info.name }} etusivulle</a>
+{% endif %}
+{% endfor %}
 
 </div>
 
