@@ -80,6 +80,20 @@ def add_comment():
 
     return redirect("/exercise/"+str(exercise_id)+"/"+str(exercise_owner))
 
+@app.route("/delete_comment", methods=["POST"])
+def delete_comment():
+    creator_id = users.get_id()
+
+    if request.method == "POST":
+        users.check_csrf()
+
+        comment_id = request.form["comment_id"]
+        exercise_owner = request.form["owner"]
+        exercise_id = request.form["id"]
+        exercises.delete_comment(creator_id, comment_id)
+    
+    return redirect("/exercise/"+str(exercise_id)+"/"+str(exercise_owner))
+
 @app.route("/exercise/<int:exercise_id>/<int:user_id>")
 def show_exercise(exercise_id, user_id):
     current_id = users.get_id()

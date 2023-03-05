@@ -17,7 +17,7 @@ def get_exercise_info(exercise_id, creator_id):
     return exercise_information
 
 def get_exercise_comments(exercise_id):
-    sql = text("""SELECT c.comment, u.name FROM comments c, users u
+    sql = text("""SELECT c.id, c.user_id, c.comment, u.name FROM comments c, users u
     WHERE c.exercise_id=:id AND u.id=c.user_id""")
     result = db.session.execute(sql, {"id":exercise_id})
     exercise_comments = result.fetchall()
@@ -97,4 +97,9 @@ def add_comment(user_id, exercise_id, comment):
     sql = text("""INSERT INTO comments (user_id, exercise_id, comment) VALUES
         (:user_id, :exercise_id, :comment)""")
     db.session.execute(sql, {"user_id":user_id, "exercise_id":exercise_id, "comment":comment})
+    db.session.commit()
+
+def delete_comment(user_id, comment_id):
+    sql = text("""DELETE FROM comments WHERE user_id=:user_id AND id=:comment_id""")
+    db.session.execute(sql, {"user_id":user_id, "comment_id":comment_id})
     db.session.commit()

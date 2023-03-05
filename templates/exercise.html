@@ -11,9 +11,20 @@
 <p><b>Kesto:</b> {{ info.hours }}h {{ info.minutes }}min</p>
 <p><b>Luotu</b> {{ timestamp }}</p>
 <p><b>Kommentit:</b> </p>
+
 {% for comment in comments %}
 <hr>
-<p><b>{{ comment.name }}:</b> {{ comment.comment }}</p>
+<p><b>{{ comment.name }}:</b> {{ comment.comment }}
+    {% if session.user_id == comment.user_id %}
+    <form action="/delete_comment" method="POST">
+    <button name="comment_id" type="submit" value="{{ comment.id }}">Poista kommentti</button>
+    <input type="hidden" name="owner" value="{{ owner }}"/>
+    <input type="hidden" name="id" value="{{ info.id }}"/>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    </form>
+    {% endif %}
+    </p>
+
 {% endfor %}
 <hr>
 
