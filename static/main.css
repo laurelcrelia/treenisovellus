@@ -2,7 +2,13 @@ body {
     margin: auto;
     max-width: 45em;
     font-family: 'Helvetica', 'Arial', sans-serif;
-    background-color: #caf5ef;
+    background-color: #407088;
+}
+
+form {
+    padding: 1em .75em;
+    background:rgb(218, 234, 230);
+    border-radius: .5em;
 }
 
 table {
@@ -15,16 +21,44 @@ td, th {
     border-width: 1px;
 }
 
+nav li {
+    display: inline-block;
+    padding: .5em 1em;
+    border-radius: .5em;
+    margin: .2em;
+    background: rgb(192, 195, 197);
+}
+
+nav li a {
+    text-decoration: none;
+    color: #000;
+}
+
+nav li:hover {
+    background-color: rgb(226, 226, 226);
+}
+
+nav ul {
+    display: inline-block;
+    padding: 0;
+    margin: .5em;
+    text-align: center;
+}
+
 .header {
-    background: rgb(157, 245, 230);
+    background: #132743;;
     font-weight: bold;
     padding: 1em 1em;
     font-size: 1em;
+    color:rgb(255, 255, 255);
+    border-radius: .5em;
+    margin-top: .5em
 }
 
 .content {
-    background: rgb(232, 250, 246);
+    background: rgb(198, 221, 218);
     padding: 1.5em 2em;
+    border-radius: .5em;
 }
 
 .friend_search {
