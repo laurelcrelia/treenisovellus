@@ -166,7 +166,7 @@ def search_friend():
             return render_template("error.html", message=
                                    "Syöttämääsi käyttäjää ei löydy järjestelmästä")
         users.send_request(user_id, users.search_friend(search))
-        return redirect("/main")
+        return redirect("/friends")
 
 @app.route("/requests", methods=["POST"])
 def process_request():
@@ -193,7 +193,7 @@ def delete_friendship():
         friend_id = request.form["friend_id"]
         users.delete_friendship(user_id, friend_id)
 
-    return redirect("/main")
+    return redirect("/friends")
 
 @app.route("/friend/<int:friend_id>/<friend_name>")
 def show_friend(friend_id, friend_name):
