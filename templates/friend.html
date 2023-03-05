@@ -42,11 +42,13 @@
 </p>
 
 <p>
+<div class="forms">
 <form action="/delete_friend" method="POST">
     <button name="friend_id" type="submit" value="{{ friend_id }}">Poista {{ friend_name }} ystävälistalta
     </button>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
+</div>
 </p>
 
 <a href="/friends">Palaa kaverilistaan</a>

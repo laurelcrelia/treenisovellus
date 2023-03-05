@@ -5,7 +5,7 @@ body {
     background-color: #407088;
 }
 
-form {
+.forms {
     padding: 1em .75em;
     background:rgb(218, 234, 230);
     border-radius: .5em;
@@ -64,6 +64,12 @@ nav ul {
 .friend_search {
     display: block;
     float: right;
+}
+
+.comment {
+    padding: .5em .5em;
+    background:rgb(218, 234, 230);
+    border-radius: .5em;
 }
 
 .friend_requests {

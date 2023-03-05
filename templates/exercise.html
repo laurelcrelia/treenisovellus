@@ -25,6 +25,7 @@
 
 {% for comment in comments %}
 <hr>
+<div class="comment">
 <p><b>{{ comment.name }}:</b> {{ comment.comment }}
     {% if session.user_id == comment.user_id %}
     <form action="/delete_comment" method="POST">
@@ -35,7 +36,7 @@
     </form>
     {% endif %}
     </p>
-
+</div>
 {% endfor %}
 <hr>
 
