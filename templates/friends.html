@@ -23,7 +23,7 @@
     </div>
 </p>
 
-<p><b>Kaverilista:</b><br>
+<p><h2>Kaverilista:</h2>
 {% if not friends %}
 <p>Kaverilistasi on tyhjä.</p>
 {% else %}
@@ -35,7 +35,8 @@
 </ul>
 </p>
 
-<p><b>Kaveripyynnöt:</b><br>
+<div class="friend_requests">
+<p><b>Kaveripyynnöt:</b></p>
 {% if not requests %}
 <p>Sinulle ei ole saapunut uusia kaveripyyntöjä.</p>
 {% else %}
@@ -52,6 +53,7 @@
 {% endfor %}
 {% endif %}
 </p>
+</div>
 
 </div>
 
