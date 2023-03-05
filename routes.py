@@ -73,12 +73,16 @@ def add_comment():
 
 @app.route("/exercise/<int:exercise_id>/<int:user_id>")
 def show_exercise(exercise_id, user_id):
-    information = exercises.get_exercise_info(exercise_id, user_id)
-    comments = exercises.get_exercise_comments(exercise_id)
-    timestamp = exercises.get_timestamp(exercise_id, user_id)
-    date = exercises.get_date(exercise_id, user_id)
-    return render_template("exercise.html", information=information, comments=comments,
-    timestamp=timestamp, date=date, owner=user_id)
+    current_id = users.get_id()
+    if not users.is_friend(current_id, user_id) and current_id != user_id:
+        return render_template("error.html", message="Ei oikeutta nähdä sivua")
+    else:
+        information = exercises.get_exercise_info(exercise_id, user_id)
+        comments = exercises.get_exercise_comments(exercise_id)
+        timestamp = exercises.get_timestamp(exercise_id, user_id)
+        date = exercises.get_date(exercise_id, user_id)
+        return render_template("exercise.html", information=information, comments=comments,
+        timestamp=timestamp, date=date, owner=user_id)
 
 @app.route("/index", methods=["GET", "POST"])
 def login():
