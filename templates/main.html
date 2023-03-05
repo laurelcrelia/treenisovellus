@@ -28,7 +28,7 @@
 {% for request in requests %}
     {{ request.name }}
         <form action="/requests" method="post">
-            <input type="radio" name="choice" value="Hyväksy"> Hyväksy
+            <input type="radio" name="choice" value="Hyväksy" checked> Hyväksy
             <input type="radio" name="choice" value="Hylkää"> Hylkää
             <input type="submit" value="Valitse">
             <input type="hidden" name="id" value="{{ request.id }}"/>
