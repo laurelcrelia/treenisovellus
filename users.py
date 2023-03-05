@@ -86,19 +86,16 @@ def delete_request(request_id):
     db.session.commit()
 
 def add_friendship(user_id, friend_id):
-    sql1 = text("""INSERT INTO relations (user_id, friend_id)
+    sql = text("""INSERT INTO relations (user_id, friend_id)
                 SELECT :user_id, :friend_id WHERE NOT :friend_id IN 
                 (SELECT friend_id FROM relations WHERE user_id=:user_id) 
                 AND NOT :user_id=:friend_id""")
-    sql2 = text("""INSERT INTO relations (user_id, friend_id)
-                SELECT :user_id, :friend_id WHERE NOT :friend_id IN 
-                (SELECT friend_id FROM relations WHERE user_id=:user_id) 
-                AND NOT :user_id=:friend_id""")
-    db.session.execute(sql1, {"user_id":user_id, "friend_id":friend_id})
-    db.session.execute(sql2, {"user_id":friend_id, "friend_id":user_id})
+    db.session.execute(sql, {"user_id":user_id, "friend_id":friend_id})
+    db.session.execute(sql, {"user_id":friend_id, "friend_id":user_id})
     db.session.commit()
 
 def delete_friendship(user_id, friend_id):
     sql = text("DELETE FROM relations WHERE user_id=:user_id AND friend_id=:friend_id")
     db.session.execute(sql, {"user_id":user_id, "friend_id":friend_id})
+    db.session.execute(sql, {"user_id":friend_id, "friend_id":user_id})
     db.session.commit()
