@@ -1,4 +1,4 @@
-# :muscle: Workout diary web application
+# :muscle: Workout Diary App
 
 This app was developed as a project for the [Databases and Web Programming](https://hy-tsoha.github.io/materiaali/) course, which focuses on building a web application that utilizes a database, using Python (Flask) and PostgreSQL.
 
