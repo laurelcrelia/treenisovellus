@@ -12,8 +12,7 @@ This app is a workout diary where users can log their training sessions, track p
 - deployment practices
 
 #### Technologies
-- Python
-- Flask
+- Python (+ Flask)
 - PostgreSQL
 - Git version control
 - HTML
