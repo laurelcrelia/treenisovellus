@@ -1,61 +1,80 @@
-# Treenisovellus
+# Workout diary
 
-Sovellus on treenipäiväkirja tyylinen toteutus, jolla voi pitää kirjaa tehdyistä treeneistä. Sovellukseen voi luoda käyttäjän ja olla vuorovaikutuksessa muiden käyttäjien kanssa.
+This app was developed as a project for the [Databases and Web Programming](https://hy-tsoha.github.io/materiaali/) course, which focuses on building a web application that utilizes a database, using Python (Flask) and PostgreSQL.
 
-## Sovelluksen toiminnallisuudet
-- Käyttäjä voi luoda tunnuksen, jolla voi kirjautua sisään sekä ulos.
-- Käyttäjä voi lisätä uuden treenin.
-- Käyttäjä voi poistaa treenin.
-- Käyttäjä näkee treenit-osiossa kaikki lisäämänsä treenit kronologisessa järjestyksessä niin että uusin treeni näkyy ensin ja vanhin viimeisenä.
-- Käyttäjä näkee etusivullaan koosteosion jossa lukee kaikkien omien treenien kokonaiskesto ja treenien lukumäärä.
-- Treenille tulee sen luomishetkellä määritellä päivämäärä, treenin kesto tunteina ja minuutteina sekä laji. Nämä tiedot tallentuvat tietokantaan.
-- Käyttäjä voi lähettää kaveripyynnön toiselle käyttäjälle etsimällä tämän käyttäjätunnuksen järjestelmästä.
-- Kaverisuhde varmistuu kun toinen käyttäjä käy hyväksymässä lähettämäsi kaveripyynnön.
-- Käyttäjä voi poistaa kaverin ja tällöin kaverisuhde katoaa molemmilta.
-- Käyttäjä voi tarkastella kaverin etusivua ja treenejä.
-- Sekä omalle että kaverin treenille voi lisätä kommentin.
-- Oman kommentin voi poistaa.
+This app is a workout diary where users can log their training sessions, track progress and interact with other users. It also includes basic authentication and social features, like adding friends, viewing their workouts, and leaving comments.
 
-## Ohjeet sovelluksen käynnistämiseen paikallisesti
+## What I learned
+- web development in general and principles behind dynamic websites
+- building a secure web application
+- database integration
+- designing of a database and its queries
+- deployment practices
 
+#### Technologies
+- Python
+- Flask
+- PostgreSQL
+- Git version control
+- HTML
+- CSS
 
-1) Kloonaa tämä repositorio omalle koneellesi.
+## Features
+A user can..
+- ..create an account, log in, and log out.
+- ..add a new workout.
+- ..delete their own workout.
+- ..view their own workouts and details on their homepage.
+- ..view a summary section showing the total duration and total number of workouts.
+- ..send a friend request to another user by searching for their username in the system.
+- ..confirm friendship when other user sends a friend request.
+- ..remove friendship (which then deletes the friendship from both users)
+- ..view friend's homepage and workouts.
+- ..write a comment for either their own or friend's workout.
+- ..delete a comment that they have written.
 
-2) Jos et ole asentanut PostgreSQL:ää ja käytät Linuxia tee se [näiden](https://github.com/hy-tsoha/local-pg) ohjeiden avulla.    
-  Muiden järjestelmien asennusohjeita löytyy [täältä](https://postgresql.org/download/).
+## Instructions for launching the app locally
 
-3) Siirry uudessa komentorivi-ikkunassa hakemistoon, jossa äsken asentamasi PostgreSQL sijaitsee. Käynnistä tietokanta komennolla
+1) Clone this repository to your local machine.
+
+2) If you haven’t installed PostgreSQL and are using Linux, follow [these instructions](https://github.com/hy-tsoha/local-pg).   
+  For installation instructions on other systems, visit [PostgreSQL's official website](https://postgresql.org/download/).
+
+3) Open a new terminal window, navigate to the directory where PostgreSQL was installed, and start the database with the command:
     ```$ start-pg.sh```
 
-4) Avaa taas uusi komentorivi-ikkuna ja avaa PostgreSQL-tulkki komennolla    
+4) Open another terminal window and launch the PostgreSQL interpreter with:   
     ```$ psql```    
-  Luo nyt uusi tietokanta sovellusta varten komennolla    
-    ```user=# CREATE DATABASE <tietokannan nimi>;```
+  Create a new database for the application using the command:    
+    ```user=# CREATE DATABASE <database_name>;```
 
-5) Siirry sovelluksen juurikansioon ja luo sinne .env-tiedosto.   
-  Määritä tiedoston sisältö seuraavanlaiseksi, mikäli asensit PostgreSQL:n ensimmäisen linkin ohjeen avulla:    
+5) Navigate to the root directory of the application and create a .env file.
+If you installed PostgreSQL following the first link, set the file’s content as:      
   ```
-  DATABASE_URL=postgresql+psycopg2:///<tietokannan nimi>    
-  SECRET_KEY=<salainen-avain>
+  DATABASE_URL=postgresql+psycopg2:///<database_name>    
+  SECRET_KEY=<secret_key>
   ```
-  Muuten:   
+  Otherwise:   
   ```
-  DATABASE_URL=postgresql:///<tietokannan nimi>   
-  SECRET_KEY=<salainen-avain>
+  DATABASE_URL=postgresql:///<database_name>   
+  SECRET_KEY=<secret_key>
   ```
 
-6) Aktivoi virtuaaliympäristö ja asenna sovelluksen riippuvuudet komennoilla    
+6) Activate a virtual environment and install the application dependencies with the following commands:    
   ```$ python3 -m venv venv```    
   ```$ source venv/bin/activate```    
   ```$ pip install -r ./requirements.txt```
 
 
-7) Määritä tietokannan skeema sovelluksen juurihakemistossa komennolla    
-```$ psql -d <tietokannan nimi> < schema.sql```  
+7) Define the database schema by running the following command in the application’s root directory:   
+```$ psql -d <database_name> < schema.sql```  
 
-8) Käynnistä vielä aiemmin nimeämäsi tietokanta PostgreSQL-tulkissa komennolla    
-```user=# \connect <tietokannan nimi>;```  
+8) Start the previously created database in the PostgreSQL interpreter with:    
+```user=# \connect <database_name>;```  
 
-9) Nyt voit ajaa sovelluksen sen juurihakemistossa komennolla   
+9) Finally, run the application from its root directory with:   
 ```$ flask run```
+
+
+
 
