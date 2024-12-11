@@ -33,7 +33,7 @@ A user can..
 - ..write a comment for either their own or friend's workout.
 - ..delete a comment that they have written.
 
-## [Instructions](https://github.com/laurelcrelia/treenisovellus/documentation/instructions.md) 
+## [Instructions](documentation/instructions.md) 
 
 
 
